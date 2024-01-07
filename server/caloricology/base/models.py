@@ -14,7 +14,7 @@ class food(models.Model):
 
 class macro_day(models.Model):
     owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, default=1)
-    date = models.DateField(default=timezone.today().date())
+    date = models.DateField(default=timezone.now().date())
     calories = models.IntegerField(default = 0)
     pro = models.IntegerField(default = 0)
     fat = models.IntegerField(default = 0)
