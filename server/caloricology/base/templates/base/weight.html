@@ -1,0 +1,7 @@
+<h1> Please add your weight and the date you took the weight below </h1>
+
+<form action="weight" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="SUBMIT">
+</form>

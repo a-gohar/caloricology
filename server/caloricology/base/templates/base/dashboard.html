@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Calorie Tracking Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .calorie-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .calorie-summary div {
+            flex: 1;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Your Calorie Tracking Dashboard</h1>
+    </header>
+    <nav>
+        <!-- Add navigation links or menu items relevant to your dashboard -->
+        <a href="#">Dashboard</a> |
+        <a href="#">Food log</a> |
+        <a href="#">Settings</a> |
+        <a href="#">Logout</a>
+    </nav>
+    <main>
+        <h2>Welcome, {{ Username }}!</h2>
+        <div class="calorie-summary">
+            <div>
+                <h3>Today's Calories</h3>
+                <p>{Cal today}</p>
+            </div>
+            <div>
+                <h3>Remaining Calories</h3>
+                <p>[Calories remaining today]</p>
+            </div> 
+            <div>
+                <h3> Weight trend </h3>
+                <p> The weight trend will go here</p>
+            </div>
+        </div>
+        <!-- Add more content and features specific to your calorie tracking dashboard -->
+    </main>
+    <footer>
+        <p>&copy; 2024 Your Calorie Tracking App</p>
+    </footer>
+</body>
+<script>
+
+</script>
+</html>
