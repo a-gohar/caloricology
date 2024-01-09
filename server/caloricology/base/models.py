@@ -13,6 +13,11 @@ class food(models.Model):
     def __str__(self):
         return str(self.cal) + "calories"
 
+class user_goals(models.Model):
+    owner = models.OneToOneField("accounts.User", on_delete=models.CASCADE, default=1)
+    tdee = models.IntegerField(default=1000)
+    pRatio = models.IntegerField(default=0)
+    weekly_target = models.IntegerField(default=0)
 class macro_day(models.Model):
     owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, default=1)
     date = models.DateField(default=timezone.now().date(), unique=True)

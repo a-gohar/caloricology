@@ -7,12 +7,23 @@ from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm
 from django.http import JsonResponse
 
 def index(request):
-    return HttpResponse("<h1> WIP <h1>")
+    return render(request, "base/index.html")
 
 @login_required
 def foodlog(request):
     if request.method == "GET":
         return render(request, "base/foodlog.html", {"Username": request.user.first_name})
+    
+@login_required
+def get_goals(request):
+    goalObject = request.user.user_goals
+    serialized_data= [{"tdee": goalObject.tdee, "pRatio": goalObject.pRatio, "target": goalObject.weekly_target}]
+    return JsonResponse({"goals": serialized_data})
+    
+@login_required
+def update_goals(request):
+    if request.method == "POST":
+        pass
 
 @login_required
 def update_food_log(request):
@@ -20,10 +31,9 @@ def update_food_log(request):
     macro = macro_day.objects.get_or_create(date=date[0:10], owner=request.user)
     # Assuming FoodEntry model has a field 'date' representing the date of the entry
     food_entries = food.objects.filter(day=macro[0])
-    print(macro)
     # You may need to serialize the data appropriately based on your model structure
-    serialized_data = [{'name': entry.name, 'calories': entry.cal} for entry in food_entries]
-    print(serialized_data)
+    serialized_data = [{'name': entry.name, 'calories': entry.cal, 'protein': entry.protein,
+                        'fat': entry.fat, 'carbs': entry.carbs} for entry in food_entries]
     # Return the serialized data as JSON
     return JsonResponse({'food_log': serialized_data})
     
@@ -90,7 +100,7 @@ def addfood(request):
             carb = foodPerc.carb_100g * data["volume"] // 100
             food.objects.create(day=today[0] , name=data["food_name"], 
                                 cal=calories, protein=protein, fat=fat, carbs=carb)
-            return HttpResponseRedirect("/dashboard")
+            return HttpResponse(status=204)
         except Exception as e :
             print(e)
             return HttpResponseBadRequest("Error", status=405)
