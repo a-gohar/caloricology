@@ -4,11 +4,29 @@ from django.template import loader
 from .models import food, savedFood, weight, macro_day
 from django.contrib.auth.decorators import login_required
 from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm
-
+from django.http import JsonResponse
 
 def index(request):
     return HttpResponse("<h1> WIP <h1>")
 
+@login_required
+def foodlog(request):
+    if request.method == "GET":
+        return render(request, "base/foodlog.html", {"Username": request.user.first_name})
+
+@login_required
+def update_food_log(request):
+    date = request.GET.get('date')
+    macro = macro_day.objects.get_or_create(date=date[0:10], owner=request.user)
+    # Assuming FoodEntry model has a field 'date' representing the date of the entry
+    food_entries = food.objects.filter(day=macro[0])
+    print(macro)
+    # You may need to serialize the data appropriately based on your model structure
+    serialized_data = [{'name': entry.name, 'calories': entry.cal} for entry in food_entries]
+    print(serialized_data)
+    # Return the serialized data as JSON
+    return JsonResponse({'food_log': serialized_data})
+    
 @login_required
 def dashboard(request):
     if request.method == "GET":
@@ -46,12 +64,17 @@ def edit_day(request):
         return render(request, "base/editday.html", {"form": form} )
     else:
         pass
+
+def foodForm(request):
+    form = addFoodForm()
+    return render("base/addfood.html", {"form": form}, request=request)
         
 @login_required
 def addfood(request):
     if request.method == "GET":
         form = addFoodForm()
-        return render(request, "base/addfood.html", {"form": form})
+        return HttpResponse(loader.render_to_string("base/addfood.html", 
+                                                    {"form": form}, request))
     if request.method == "POST":
         try:
             form = addFoodForm(request.POST)

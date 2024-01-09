@@ -7,5 +7,9 @@ urlpatterns = [
     path("dashboard", views.dashboard, name="dashboard"),
     path("createfood", views.create_food, name="food_creator"),
     path("addfood", views.addfood, name="add_food"),
-    path("weight", views.addWeight, name="Add_weight")
+    path("weight", views.addWeight, name="Add_weight"),
+    path("foodlog", views.foodlog, name="Food_log"),
+    path("editday", views.edit_day, name="edit_day"),
+    path('update-food-log/', views.update_food_log, name='update_food_log'),
+    path("foodform", views.foodForm, name="serve_food_form")
 ]
