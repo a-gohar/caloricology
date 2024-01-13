@@ -1,4 +1,5 @@
 from django import forms
+from .models import user_goals
 
 class weightForm(forms.Form):
     date = forms.DateField(label="Date")
@@ -7,7 +8,12 @@ class editDayForm(forms.Form):
     date = forms.DateField(label="Date you wish to edit:")
     new_cal = forms.IntegerField(label="New calories:", min_value=0, max_value=20000)
 
-
+class userGoalsForm(forms.ModelForm):
+    class Meta:
+        model = user_goals
+        fields = ['goal', 'weekly_target']
+        
+    
 class addFoodForm(forms.Form):
     date = forms.DateField(label="What day do you want to add food?")
     food_name = forms.CharField(label="Food name?", max_length=300)

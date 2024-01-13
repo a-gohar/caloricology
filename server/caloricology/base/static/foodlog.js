@@ -52,7 +52,7 @@ async function navigateDay(offset) {
 }
 
 // Function to update the food log based on the current date
-function updateFoodLog() {
+async function updateFoodLog() {
     // Fetch and display food log data for the current date (from your backend)
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'update-food-log?date=' + currentDate.toISOString(), true);
@@ -60,7 +60,7 @@ function updateFoodLog() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             // Parse the JSON response
             consumedCalories = 0;
-            remainingCalories = 0;
+            remainingCalilories = 0;
             var response = JSON.parse(xhr.responseText);
 
             // Update the food log based on the fetched content

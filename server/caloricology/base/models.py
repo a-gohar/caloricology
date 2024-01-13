@@ -1,6 +1,6 @@
 from django.db import models
 import datetime
-
+from annoying.fields import AutoOneToOneField
 from django.utils import timezone
 
 class food(models.Model):
@@ -15,17 +15,33 @@ class food(models.Model):
 
 class user_goals(models.Model):
     owner = models.OneToOneField("accounts.User", on_delete=models.CASCADE, default=1)
+    goal_choices = [
+        ('maintain', 'Maintain'),
+        ('gain', 'Gain Weight'),
+        ('lose', 'Lose Weight'),
+    ]
+    experience_choices = [
+        ('beginner', 'Beginner'),
+        ('intermediate', 'Intermediate'),
+        ('advanced', 'Advanced')
+    ]
+    goal = models.CharField(max_length=10, choices=goal_choices, default='maintain')
+    experience = models.CharField(max_length=25, choices=experience_choices, default='beginner')
     tdee = models.IntegerField(default=1000)
     pRatio = models.IntegerField(default=0)
     weekly_target = models.IntegerField(default=0)
+    
 class macro_day(models.Model):
     owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, default=1)
-    date = models.DateField(default=timezone.now().date(), unique=True)
+    date = models.DateField(default="2024-01-01", unique=True)
+    weight = models.IntegerField(default = 0)
     calories = models.IntegerField(default = 0)
     pro = models.IntegerField(default = 0)
     fat = models.IntegerField(default = 0)
+    def newWeight(self, new_weight):
+        self.weight = new_weight
     def __str__(self):
-        return str(self.date) + ": " + str(self.calories)
+        return str(self.date) + ": " + str(self.calories) + str(self.weight)
     
 
 class savedFood(models.Model):
@@ -38,14 +54,3 @@ class savedFood(models.Model):
     def __str__(self):
         return str(self.cal_100g) + "cal/100g"
 
-class weight(models.Model):
-    entry_date = models.ForeignKey("macro_day", on_delete=models.CASCADE, unique=True)
-    entry = models.PositiveSmallIntegerField(default='0')
-    def last3Weeks(self) -> bool:
-        """_summary_
-
-        Returns:
-            bool: True if this weight was added in the last 3 weeks
-        """
-        return self.entry_date >= timezone.now().date() - datetime.timedelta(days=21)
-    

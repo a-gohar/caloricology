@@ -6,6 +6,7 @@
     <title>Your Calorie Tracking Dashboard</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
+    <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
 </head>
 <body>
     <header>
@@ -13,25 +14,17 @@
     </header>
     <nav>
         <!-- Add navigation links or menu items relevant to your dashboard -->
-        <a href="/dashboard">Dashboard</a> |
-        <a href="/foodlog">Food log</a> |
-        <a href="#">Settings</a> |
-        <a href="#">Logout</a>
+        <a href="dashboard">Dashboard</a> |
+        <a href="foodlog">Food log</a> |
+        <a href="settings">Settings</a> |
+        <a href="logout">Logout</a>
     </nav>
     <main>
         <h2>Welcome, {{ Username }}!</h2>
         <div class="calorie-summary">
-            <div>
-                <h3>Today's Calories</h3>
-                <p>{Cal today}</p>
-            </div>
-            <div>
-                <h3>Remaining Calories</h3>
-                <p>[Calories remaining today]</p>
-            </div> 
-            <div>
+            <div id="weightTrend">
                 <h3> Weight trend </h3>
-                <p> The weight trend will go here</p>
+                <canvas id="weightChart" style="width:100%;max-width:500px;height:200"></canvas>
             </div>
         </div>
         <!-- Add more content and features specific to your calorie tracking dashboard -->
@@ -40,7 +33,6 @@
         <p>&copy; 2024 Your Calorie Tracking App</p>
     </footer>
 </body>
-<script>
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'dashboard.js' %}"> </script>
 </html>

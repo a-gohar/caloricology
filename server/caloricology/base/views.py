@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.template import loader
-from .models import food, savedFood, weight, macro_day
+from .models import food, savedFood, macro_day, user_goals
 from django.contrib.auth.decorators import login_required
-from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm
+from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm, userGoalsForm
 from django.http import JsonResponse
+from django.contrib.auth import logout
 
+# The weight class was moved to one to one
 def index(request):
     return render(request, "base/index.html")
 
@@ -17,8 +19,18 @@ def foodlog(request):
 @login_required
 def get_goals(request):
     goalObject = request.user.user_goals
-    serialized_data= [{"tdee": goalObject.tdee, "pRatio": goalObject.pRatio, "target": goalObject.weekly_target}]
+    serialized_data= {"tdee": goalObject.tdee, "pRatio": goalObject.pRatio, "target": goalObject.weekly_target}
     return JsonResponse({"goals": serialized_data})
+    
+@login_required
+def get_weights(request):
+    day = macro_day.objects.filter(owner=request.user)
+    serialized_data = []
+    for entry in day:
+        if entry.weight > 0:
+            serialized_data.append({"Date": str(entry.date), "weight": entry.weight})
+    print(serialized_data)
+    return JsonResponse({"weights":serialized_data})
     
 @login_required
 def update_goals(request):
@@ -60,11 +72,15 @@ def addWeight(request):
                 return HttpResponseBadRequest("Error with your form")
             data = form.cleaned_data
             day = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
-            weight.objects.create(entry_date=day[0], entry=data["weight"])
-            return HttpResponseRedirect("dashboard")
+            print(data["weight"])
+            day[0].weight = data["weight"]
+            print(day[0])
+            print(day[0].weight)
+            day[0].save()
+            return HttpResponse(status=204)
         except Exception as e:
             print(e)
-            return HttpResponseBadRequest()
+            return HttpResponseBadRequest("Bad request")
 
 
 @login_required
@@ -120,3 +136,22 @@ def create_food(request):
                                         cal_100g = data["cal_100"], protein_100g= data["protein_100"],
                                         fat_100g=data["fat_100"], carb_100g=data["carb_100"])
         return HttpResponseRedirect("/dashboard")
+
+@login_required
+def settings(request):
+    user = request.user
+    user_goals_obj = user_goals.objects.get_or_create(owner=user)[0]
+    
+    if request.method == 'POST':
+        form = userGoalsForm(request.POST, instance=user_goals_obj)
+        if form.is_valid():
+            form.save()
+    else:
+        form = userGoalsForm(instance=user_goals_obj)
+
+    return render(request, 'base/settings.html', {'form': form})
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect("index")

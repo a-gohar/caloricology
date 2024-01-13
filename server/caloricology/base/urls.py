@@ -11,5 +11,7 @@ urlpatterns = [
     path("foodlog", views.foodlog, name="Food_log"),
     path("editday", views.edit_day, name="edit_day"),
     path('update-food-log/', views.update_food_log, name='update_food_log'),
-    path("foodform", views.foodForm, name="serve_food_form")
+    path("foodform", views.foodForm, name="serve_food_form"),
+    path("get-weights", views.get_weights, name="weight get"),
+    path("settings", views.settings, name="Settings" )
 ]
