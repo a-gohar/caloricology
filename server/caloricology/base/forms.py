@@ -1,5 +1,5 @@
 from django import forms
-from .models import user_goals
+from .models import user_goals, savedFood
 
 class weightForm(forms.Form):
     date = forms.DateField(label="Date")
@@ -16,7 +16,7 @@ class userGoalsForm(forms.ModelForm):
     
 class addFoodForm(forms.Form):
     date = forms.DateField(label="What day do you want to add food?")
-    food_name = forms.CharField(label="Food name?", max_length=300)
+    food_name = forms.ModelChoiceField(queryset=savedFood.objects.none(), empty_label="Select a food")
     volume = forms.IntegerField(label="Weight in grams?")
 class saveFoodForm(forms.Form):
     food_name = forms.CharField(label="Food name", max_length=100)

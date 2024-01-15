@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm, userGoalsForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
+from django.views import generic
+from datetime import date
 
 # The weight class was moved to one to one
 def index(request):
@@ -19,8 +21,15 @@ def foodlog(request):
 @login_required
 def get_goals(request):
     goalObject = request.user.user_goals
+    i = 0
+    serialized_days = []
+    while i < 21:
+        day = date.today() - i
+        i += 1
+        entry = macro_day.objects.get_or_create(owner=request.owner, date=day)[0]
+        serialized_days.append({"cal": entry.calories})
     serialized_data= {"tdee": goalObject.tdee, "pRatio": goalObject.pRatio, "target": goalObject.weekly_target}
-    return JsonResponse({"goals": serialized_data})
+    return JsonResponse({"goals": serialized_data, "days" : serialized_days})
     
 @login_required
 def get_weights(request):
@@ -99,6 +108,7 @@ def foodForm(request):
 def addfood(request):
     if request.method == "GET":
         form = addFoodForm()
+        form.fields['food_name'].queryset = savedFood.objects.filter(owner=request.user)
         return HttpResponse(loader.render_to_string("base/addfood.html", 
                                                     {"form": form}, request))
     if request.method == "POST":
@@ -111,9 +121,14 @@ def addfood(request):
             today = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
             foodPerc = savedFood.objects.get(owner=request.user, food_name=data["food_name"])
             calories = foodPerc.cal_100g * data["volume"] // 100
+            today.calories += calories
             protein = foodPerc.protein_100g * data["volume"] // 100
+            today.pro += protein
             fat = foodPerc.fat_100g * data["volume"] // 100
             carb = foodPerc.carb_100g * data["volume"] // 100
+            today.fat += fat
+            today.carbs += carb
+            today.save()
             food.objects.create(day=today[0] , name=data["food_name"], 
                                 cal=calories, protein=protein, fat=fat, carbs=carb)
             return HttpResponse(status=204)
@@ -135,7 +150,7 @@ def create_food(request):
         food = savedFood.objects.create(owner=request.user, food_name=data["food_name"], 
                                         cal_100g = data["cal_100"], protein_100g= data["protein_100"],
                                         fat_100g=data["fat_100"], carb_100g=data["carb_100"])
-        return HttpResponseRedirect("/dashboard")
+        return HttpResponse(status=204)
 
 @login_required
 def settings(request):
@@ -155,3 +170,7 @@ def settings(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect("index")
+
+
+    
+    

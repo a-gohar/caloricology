@@ -15,3 +15,5 @@ class User(AbstractUser):
     #     macros = macro_day.objects.filter(owner=self.kwargs['pk'])
     #     if not weights.count() < 3 or not macros.exists() < 1:
     #         return 0
+    def __str__(self):
+        return self.username
