@@ -7,7 +7,7 @@ from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm, userGoals
 from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.views import generic
-from datetime import date
+from datetime import date, timedelta
 
 # The weight class was moved to one to one
 def index(request):
@@ -21,13 +21,13 @@ def foodlog(request):
 @login_required
 def get_goals(request):
     goalObject = request.user.user_goals
-    i = 0
+    i = 21
     serialized_days = []
-    while i < 21:
-        day = date.today() - i
-        i += 1
-        entry = macro_day.objects.get_or_create(owner=request.owner, date=day)[0]
-        serialized_days.append({"cal": entry.calories})
+    while i >= 0:
+        day = date.today() - timedelta(i)
+        i -= 1
+        entry = macro_day.objects.get_or_create(owner=request.user, date=day)[0]
+        serialized_days.append({"cal": entry.calories, "weight": entry.weight})
     serialized_data= {"tdee": goalObject.tdee, "pRatio": goalObject.pRatio, "target": goalObject.weekly_target}
     return JsonResponse({"goals": serialized_data, "days" : serialized_days})
     
@@ -115,10 +115,12 @@ def addfood(request):
         try:
             form = addFoodForm(request.POST)
             if not form.is_valid():
-                print("FAIL")
+                print(form.errors)
+                print(form.cleaned_data['food_name'])
                 return HttpResponseBadRequest("Invalid form")
             data = form.cleaned_data
             today = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
+            today = today[0]
             foodPerc = savedFood.objects.get(owner=request.user, food_name=data["food_name"])
             calories = foodPerc.cal_100g * data["volume"] // 100
             today.calories += calories
@@ -129,7 +131,7 @@ def addfood(request):
             today.fat += fat
             today.carbs += carb
             today.save()
-            food.objects.create(day=today[0] , name=data["food_name"], 
+            food.objects.create(day=today , name=data["food_name"], 
                                 cal=calories, protein=protein, fat=fat, carbs=carb)
             return HttpResponse(status=204)
         except Exception as e :

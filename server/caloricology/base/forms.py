@@ -16,7 +16,7 @@ class userGoalsForm(forms.ModelForm):
     
 class addFoodForm(forms.Form):
     date = forms.DateField(label="What day do you want to add food?")
-    food_name = forms.ModelChoiceField(queryset=savedFood.objects.none(), empty_label="Select a food")
+    food_name = forms.ModelChoiceField(queryset=savedFood.objects.all(), empty_label="Select a food")
     volume = forms.IntegerField(label="Weight in grams?")
 class saveFoodForm(forms.Form):
     food_name = forms.CharField(label="Food name", max_length=100)

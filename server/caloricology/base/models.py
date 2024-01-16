@@ -27,7 +27,7 @@ class user_goals(models.Model):
     goal = models.CharField(max_length=10, choices=goal_choices, default='maintain')
     experience = models.CharField(max_length=25, choices=experience_choices, default='beginner')
     tdee = models.IntegerField(default=1000)
-    pRatio = models.IntegerField(default=0)
+    pRatio = models.IntegerField(default=50)
     weekly_target = models.IntegerField(default=0, validators=[
             MaxValueValidator(100),
             MinValueValidator(1)
