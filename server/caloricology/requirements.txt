@@ -127,8 +127,6 @@ requests-toolbelt==1.0.0
 ruamel.yaml.clib==0.2.7
 scipy==1.11.4
 scour==0.38.2
-selinux @ file:///builddir/build/BUILD/libselinux-3.5/src
-sepolicy @ file:///builddir/build/BUILD/selinux-3.5/python/sepolicy
 setools==4.4.3
 setproctitle==1.2.3
 setuptools==67.7.2
@@ -137,6 +135,3 @@ simplejson==3.19.2
 simpleline==1.9.0
 six==1.16.0
 sos==4.6.0
-soupsieve==2.5
-sqlparse==0.4.4
-systemd-python==235
