@@ -1,4 +1,6 @@
-<form action="addfood" method="post">
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+<form action="addfood" method="post", target=""dummyframe>
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="SUBMIT">

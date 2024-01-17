@@ -1,6 +1,7 @@
 <h1> Create new food: </h1>
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
-<form action="createfood" method="post">
+<form action="createfood" method="post", target="dummyframe">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="SUBMIT">
