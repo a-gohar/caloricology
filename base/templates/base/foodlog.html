@@ -4,7 +4,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Foodlog</title>
+    <title>Food log</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
     <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
@@ -52,10 +52,8 @@
     <!-- Popup Form -->
     <div id="popup-form">
         <div id="close-btn" onclick="closePopupForm()"> x </div>
-        <form method="post" action="addfood">
-            {% csrf_token %}
             <label>Select an option:</label>
-            <button onclick="loadForm('addfood', event)">Add Food</button>
+            <button onclick="loadForm('addfood', event)">Log Food</button>
             <button onclick="loadForm('weight', event)">Add Weight</button>
             <button onclick="loadForm('createfood', event)"> Create New Food</button>
     
@@ -63,7 +61,6 @@
             <div id="dynamic-form-container">
                 <!-- The form will be loaded here based on the option clicked -->
             </div>
-        </form>
     </div>
 <script src="{% static 'foodlog.js' %}"> </script>
 </html>
