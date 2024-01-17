@@ -153,6 +153,7 @@
            position: fixed;
            bottom: 0;
            width: 100%;
+           font-size: 14px
        }
 
        #popup-form #close-btn {
@@ -162,3 +163,36 @@
            font-size: 18px;
            cursor: pointer;
        }
+       @media only screen and (max-width: 600px) {
+        body {
+            font-size: 14px;
+        }
+    
+        header, nav {
+            padding: 8px;
+        }
+    
+        nav a {
+            margin: 0 5px;
+            font-size: 14px;
+        }
+    
+        main {
+            padding: 10px;
+        }
+    
+        .calorie-summary {
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+    
+        .calorie-summary div {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    
+        #weightChart {
+            max-width: 100%;
+            height: auto;
+        }
+    }

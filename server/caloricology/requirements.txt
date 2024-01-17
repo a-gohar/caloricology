@@ -4,8 +4,7 @@ asgiref==3.7.2
 Babel==2.12.1
 Beaker==1.12.1
 beautifulsoup4==4.12.2
-blivet==3.8.2
-blivet-gui==2.4.2
+
 Brlapi==0.8.5
 cached-property==1.5.2
 certifi==2023.5.7
