@@ -46,7 +46,8 @@ class macro_day(models.Model):
     def __str__(self):
         return str(self.date) + ": " + str(self.calories) + str(self.weight)
     class Meta:
-        constraints = [models.UniqueConstraint(fields=['owner', 'date'], name="Unique tuple")]
+        constraints = [models.UniqueConstraint(fields=['owner', 'date'], name="Unique tuple")
+                       , models.UniqueConstraint(fields=['date', 'owner'], name="Unique owner date tuple")]
     
 
 class savedFood(models.Model):
@@ -59,6 +60,7 @@ class savedFood(models.Model):
     def __str__(self):
         return self.food_name
     class Meta:
-        constraints = [models.UniqueConstraint(fields=['owner', 'food_name'], name="Unique food tuple")]
+        constraints = [models.UniqueConstraint(fields=['owner', 'food_name'], name="Unique food tuple")
+                       ,models.UniqueConstraint(fields=['food_name', 'owner'], name="Unique owner food tuple")]
     
 
