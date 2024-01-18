@@ -20,7 +20,7 @@ def foodlog(request):
     
 @login_required
 def get_goals(request):
-    goalObject = request.user.user_goals
+    goalObject = user_goals.objects.get_or_create(owner=request.user)[0]
     i = 21
     serialized_days = []
     while i >= 0:

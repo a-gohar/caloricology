@@ -51,7 +51,7 @@ async function navigateDay(offset) {
 }
 
 // Function to update the food log based on the current date
-async function updateFoodLog() {
+async function updateFoodLog(energy) {
     // Fetch and display food log data for the current date (from your backend)
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'update-food-log?date=' + currentDate.toISOString(), true);
@@ -73,7 +73,7 @@ async function updateFoodLog() {
             consumedCalories += entry.calories;
             });
         }
-        remainingCalories = 2000 - consumedCalories;
+        remainingCalories = energy - consumedCalories;
         updateCalorieSummary()
     };
     xhr.send();
@@ -95,8 +95,91 @@ function closePopupForm() {
     updateFoodLog();
     document.getElementById('popup-form').style.display = 'none';
 }
+function pRatioCalculator(p){
+    return (p*800)+(1-p)*4000
+}
+function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
+    const minEntries = 3;
+    const minDaysWithCaloricInfo = 19;
+    const caloriesPerPound = pRatioCalculator(p); // 
+    const recentWeights = tdeeWeight.filter(weight => weight !== 0)
+    // Check if there are enough weight entries in the last 3 weeks
+    if (recentWeights.length < minEntries) {
+        return tee;
+    }
+    // Check if there are enough days with non-zero caloric information
+    const recentCaloricData = tdeeCaloricData.filter(calories => calories !== 0);
+    if (recentCaloricData.length < minDaysWithCaloricInfo) {
+        return tee;
+    }
+    const w4 = runningWeight(recentWeights, recentWeights.length)
+    // Calculate weight change and calories consumed
+    const weightChange = w4[w4.length - 1] - w4[0];
+    const caloriesConsumed = recentCaloricData.reduce((totalCalories, calories) => totalCalories + calories, 0);
+    const averageTDEE = ((weightChange * caloriesPerPound) + caloriesConsumed) / recentCaloricData.length;
+    return averageTDEE.toFixed(2);
+}
+
+function runningWeight(mArray, mRange) {
+    var k = 2 / (mRange + 1);
+    emaArray = [mArray[0]];
+    for (var i = 1; i < mArray.length; i++) {
+        emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
+    }
+    return emaArray;
+}
+function get_user_information() {
+    return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'get-goals', true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Parse the JSON response
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        var tdee = response.goals.tdee;
+                        var pRatio = response.goals.pRatio;
+                        var weekly_target = response.goals.target;
+                        const caloricData = [];
+                        const weightInfo = []
+                        response.days.forEach(entry => {
+                            caloricData.push(entry.cal)
+                            weightInfo.push(entry.weight)
+                        });
+                        resolve({ tdee, pRatio, weekly_target, caloricData, weightInfo });
+                    } catch (error) {
+                        console.error('Error parsing JSON:', error.message);
+                        reject('Error parsing JSON');
+                    }
+                } else {
+                    console.error('HTTP error! Status:', xhr.status);
+                    reject('HTTP error');
+                }
+            }
+        };
+        xhr.send();
+    });
+}
+function get_daily_caloric(week_calories, pRatio){
+    var energyDensity = pRatioCalculator(pRatio);
+    energyDensity = energyDensity * week_calories
+    energyDensity = energyDensity / 7
+    return energyDensity
+}
 // Initial setup
 let consumedCalories = 0;
 let remainingCalories = 0;
 updateCurrentDate();
-updateFoodLog();
+updateFoodLog(2000);
+const fetchData = async () => {
+    try {
+        const { tdee, pRatio, weekly_target, caloricData, weightInfo } = await get_user_information();
+        const energyExpenditure = updateTDEE(tdee, pRatio, caloricData, weightInfo) + get_daily_caloric(weekly_target, pRatio);
+        updateFoodLog(energyExpenditure);
+    }
+    catch (error) {
+        console.error("error:", error);
+    }
+}
+fetchData()

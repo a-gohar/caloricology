@@ -119,7 +119,7 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const caloriesConsumed = recentCaloricData.reduce((totalCalories, calories) => totalCalories + calories, 0);
     const averageTDEE = ((weightChange * caloriesPerPound) + caloriesConsumed) / recentCaloricData.length;
     const sum = recentCaloricData.reduce((partialSum, a) => partialSum + a, 0);
-    document.getElementById(divId).innerText += `${averageTDEE.toFixed(2)}`;
+    document.getElementById(divId).innerText += `${averageTDEE.toFixed(0)}`;
 }
 
 function runningWeight(mArray, mRange) {
@@ -145,7 +145,7 @@ const fetchData = async () => {
 
 const fetchTdee = async () => {
     try {
-        const { tdee, pRatio, caloricData, weightInfo } = await get_user_information();
+        const { tdee, pRatio, weekly_target, caloricData, weightInfo } = await get_user_information();
         updateTDEE(tdee, pRatio, caloricData, weightInfo);
     }
     catch (error) {
