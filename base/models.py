@@ -35,7 +35,7 @@ class user_goals(models.Model):
     
 class macro_day(models.Model):
     owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, default=1)
-    date = models.DateField(default="2024-01-01", unique=True)
+    date = models.DateField(default="2024-01-01")
     weight = models.IntegerField(default = 0)
     calories = models.IntegerField(default = 0)
     pro = models.IntegerField(default = 0)
@@ -45,15 +45,20 @@ class macro_day(models.Model):
         self.weight = new_weight
     def __str__(self):
         return str(self.date) + ": " + str(self.calories) + str(self.weight)
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['owner', 'date'], name="Unique tuple")]
     
 
 class savedFood(models.Model):
     owner = models.ForeignKey('accounts.User', on_delete=models.CASCADE, default=1)
-    food_name = models.TextField("Name", default="", unique=True)
+    food_name = models.TextField("Name", default="")
     cal_100g = models.IntegerField("Calories Per 100g", default=0)
     protein_100g = models.IntegerField("Protein per 100g", default=0)
     carb_100g = models.IntegerField("Carbohydrates per 100g", default=0)
     fat_100g = models.IntegerField("Fat per 100g", default = 0)
     def __str__(self):
         return self.food_name
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['owner', 'food_name'], name="Unique food tuple")]
+    
 

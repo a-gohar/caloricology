@@ -48,7 +48,6 @@ async function navigateDay(offset) {
     currentDate.setDate(currentDate.getDate() + offset);
     updateCurrentDate();
     updateFoodLog();
-    xhr.send();
 }
 
 // Function to update the food log based on the current date
@@ -78,6 +77,7 @@ async function updateFoodLog() {
         updateCalorieSummary()
     };
     xhr.send();
+    return false;
 }
 function updateCalorieSummary(){
     const consumedCaloriesElement = document.getElementById('consumed-calories');
