@@ -15,5 +15,6 @@ urlpatterns = [
     path("get-weights", views.get_weights, name="weight get"),
     path("settings", views.settings, name="Settings" ),
     path("get-goals", views.get_goals, name="Goals"),
-    path("logout", views.logout_view, name="Logout")
+    path("logout", views.logout_view, name="Logout"),
+    path('remove-food', views.delete_food, name='remove_food'),
 ]

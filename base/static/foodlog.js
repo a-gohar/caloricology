@@ -63,14 +63,25 @@ async function updateFoodLog(energy) {
             var response = JSON.parse(xhr.responseText);
 
             // Update the food log based on the fetched content
-            const foodLogElement = document.getElementById('food-log');
-            foodLogElement.innerHTML = '';
+            const foodLogContainer = document.getElementById('food-log');
+            foodLogContainer.innerHTML = '';
 
-            // Iterate through the received data and update the food log
             response.food_log.forEach(entry => {
-                foodLogElement.innerHTML += `<p>${entry.name} - ${entry.calories} calories
-            - ${entry.protein}g protein - ${entry.fat}g fat - ${entry.carbs}g carbs </p>`;
-            consumedCalories += entry.calories;
+                const foodEntryElement = document.createElement('p');
+
+                const entryText = document.createTextNode(`${entry.name} - ${entry.calories} calories - ${entry.protein}g protein - ${entry.fat}g fat - ${entry.carbs}g carbs`);
+                foodEntryElement.appendChild(entryText);
+
+                const removeButton = document.createElement('button');
+                removeButton.className = 'remove-food';
+                removeButton.innerText = 'X';
+                removeButton.addEventListener('click', () => removeFood(entry.name, currentDate, entry.calories));
+
+                foodEntryElement.appendChild(removeButton);
+
+                foodLogContainer.appendChild(foodEntryElement);
+
+                consumedCalories += entry.calories;
             });
         }
         remainingCalories = energy - consumedCalories;
@@ -79,7 +90,23 @@ async function updateFoodLog(energy) {
     xhr.send();
     return false;
 }
-function updateCalorieSummary(){
+
+async function removeFood(foodName, foodDate, foodCalories) {
+    // Send a POST request to your Django view to remove the specified food
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'remove-food', true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Refresh the food log after successful removal
+            updateFoodLog();
+        }
+    };
+    console.log(foodDate)
+    xhr.send(JSON.stringify({ food_name: foodName, food_date: foodDate, calories: foodCalories }));
+}
+function updateCalorieSummary() {
     const consumedCaloriesElement = document.getElementById('consumed-calories');
     const remainingCaloriesElement = document.getElementById('remaining-calories');
 
@@ -95,8 +122,8 @@ function closePopupForm() {
     updateFoodLog();
     document.getElementById('popup-form').style.display = 'none';
 }
-function pRatioCalculator(p){
-    return (p*800)+(1-p)*4000
+function pRatioCalculator(p) {
+    return (p * 800) + (1 - p) * 4000
 }
 function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minEntries = 3;
@@ -161,7 +188,7 @@ function get_user_information() {
         xhr.send();
     });
 }
-function get_daily_caloric(week_calories, pRatio){
+function get_daily_caloric(week_calories, pRatio) {
     var energyDensity = pRatioCalculator(pRatio);
     energyDensity = energyDensity * week_calories
     energyDensity = energyDensity / 7
@@ -183,3 +210,19 @@ const fetchData = async () => {
     }
 }
 fetchData()
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');

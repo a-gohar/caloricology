@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.views import generic
 from datetime import date, timedelta
+import json
 
 # The weight class was moved to one to one
 def index(request):
@@ -173,6 +174,25 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect("index")
 
-
+@login_required
+def delete_food(request):
+    if request.method == "GET":
+        return HttpResponseBadRequest(status=400)
+    else:
+        try:
+            data = json.loads(request.body)
+            print(data)
+            food_name = data['food_name']
+            food_date = data['food_date'][0:10]
+            calories = data['calories']
+            print(food_name)
+            macro_object = macro_day.objects.get_or_create(owner=request.user, date=food_date )[0]
+            food.objects.filter(day=macro_object, name=food_name, cal=calories)[0].delete()
+            return JsonResponse({'status': 'success'})
+        except Exception as e :
+            print(e)
+            return HttpResponseBadRequest("Error", status=400)
+        
+    
     
     
