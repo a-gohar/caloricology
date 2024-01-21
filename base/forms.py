@@ -11,7 +11,7 @@ class editDayForm(forms.Form):
 class userGoalsForm(forms.ModelForm):
     class Meta:
         model = user_goals
-        fields = ['goal', 'weekly_target']
+        fields = ['weekly_target', 'tdee']
         
     
 class addFoodForm(forms.Form):

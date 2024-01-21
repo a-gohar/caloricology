@@ -9,3 +9,4 @@ caloricology/settings.py
 caloricology/root@164.92.83.178
 caloricology/base/migrations/
 caloricology/accounts/migrations
+caloricology/base/__pycache__

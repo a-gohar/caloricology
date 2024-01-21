@@ -163,36 +163,55 @@
            font-size: 18px;
            cursor: pointer;
        }
-       @media only screen and (max-width: 600px) {
-        body {
-            font-size: 14px;
-        }
-    
-        header, nav {
-            padding: 8px;
-        }
-    
-        nav a {
-            margin: 0 5px;
-            font-size: 14px;
-        }
-    
-        main {
-            padding: 10px;
-        }
-    
-        .calorie-summary {
-            flex-direction: column;
-            margin-bottom: 10px;
-        }
-    
-        .calorie-summary div {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-    
-        #weightChart {
-            max-width: 100%;
-            height: auto;
-        }
+       button {
+        background-color: #3498db; /* Blue */
+        color: #fff; /* White text */
+        border: 2px solid #3498db; /* Blue border */
+        padding: 10px 20px;
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
+        transition: background-color 0.3s ease; /* Smooth transition */
     }
+    
+    button:hover {
+        background-color: #2980b9; /* Darker blue on hover */
+    }
+    
+      
+
+       @media only screen and (max-width: 600px) {
+           body {
+               font-size: 14px;
+           }
+
+           header,
+           nav {
+               padding: 8px;
+           }
+
+           nav a {
+               margin: 0 5px;
+               font-size: 14px;
+           }
+
+           main {
+               padding: 10px;
+           }
+
+           .calorie-summary {
+               flex-direction: column;
+               margin-bottom: 10px;
+           }
+
+           .calorie-summary div {
+               width: 100%;
+               margin-bottom: 10px;
+           }
+
+           #weightChart {
+               max-width: 100%;
+               height: auto;
+           }
+       }

@@ -164,6 +164,7 @@ def settings(request):
         form = userGoalsForm(request.POST, instance=user_goals_obj)
         if form.is_valid():
             form.save()
+        return HttpResponse(status=204)
     else:
         form = userGoalsForm(instance=user_goals_obj)
 
@@ -193,6 +194,8 @@ def delete_food(request):
             print(e)
             return HttpResponseBadRequest("Error", status=400)
         
-    
-    
-    
+@login_required
+def download_data(request):
+    macro_day_objects = macro_day.objects.filter(owner=request.user)
+    serialized_data = [{"date":entry.date, "weight": entry.weight, "calories": entry.calories} for entry in macro_day_objects ]
+    return JsonResponse({"data": serialized_data})
