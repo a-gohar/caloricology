@@ -39,7 +39,6 @@ def get_weights(request):
     for entry in day:
         if entry.weight > 0:
             serialized_data.append({"Date": str(entry.date), "weight": entry.weight})
-    print(serialized_data)
     return JsonResponse({"weights":serialized_data})
     
 @login_required
@@ -82,10 +81,7 @@ def addWeight(request):
                 return HttpResponseBadRequest("Error with your form")
             data = form.cleaned_data
             day = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
-            print(data["weight"])
             day[0].weight = data["weight"]
-            print(day[0])
-            print(day[0].weight)
             day[0].save()
             return HttpResponse(status=204)
         except Exception as e:
@@ -116,8 +112,6 @@ def addfood(request):
         try:
             form = addFoodForm(request.POST)
             if not form.is_valid():
-                print(form.errors)
-                print(form.cleaned_data['food_name'])
                 return HttpResponseBadRequest("Invalid form")
             data = form.cleaned_data
             today = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
@@ -159,11 +153,15 @@ def create_food(request):
 def settings(request):
     user = request.user
     user_goals_obj = user_goals.objects.get_or_create(owner=user)[0]
-    
     if request.method == 'POST':
         form = userGoalsForm(request.POST, instance=user_goals_obj)
         if form.is_valid():
             form.save()
+        if user_goals_obj.weekly_target > 0:
+            user_goals_obj.pRatio = 50
+        else:
+            user_goals_obj.pRatio = 15
+        user_goals_obj.save()
         return HttpResponse(status=204)
     else:
         form = userGoalsForm(instance=user_goals_obj)
@@ -182,16 +180,13 @@ def delete_food(request):
     else:
         try:
             data = json.loads(request.body)
-            print(data)
             food_name = data['food_name']
             food_date = data['food_date'][0:10]
             calories = data['calories']
-            print(food_name)
             macro_object = macro_day.objects.get_or_create(owner=request.user, date=food_date )[0]
             food.objects.filter(day=macro_object, name=food_name, cal=calories)[0].delete()
             return JsonResponse({'status': 'success'})
         except Exception as e :
-            print(e)
             return HttpResponseBadRequest("Error", status=400)
         
 @login_required

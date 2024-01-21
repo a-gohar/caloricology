@@ -22,7 +22,7 @@ class user_goals(models.Model):
     pRatio = models.IntegerField(default=50)
     weekly_target = models.IntegerField(default=0, validators=[
             MaxValueValidator(100),
-            MinValueValidator(1)
+            MinValueValidator(-100)
         ])
     
 class macro_day(models.Model):

@@ -123,7 +123,7 @@ function closePopupForm() {
     document.getElementById('popup-form').style.display = 'none';
 }
 function pRatioCalculator(p) {
-    return (p * 800) + (1 - p) * 4000
+    return (p * 1800) + (1 - p) * 9250
 }
 function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minEntries = 3;
