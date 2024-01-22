@@ -96,8 +96,7 @@ function pRatioCalculator(p){
 }
 function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minEntries = 3;
-    const minDaysWithCaloricInfo = 19;
-    const caloriesPerPound = pRatioCalculator(p); // 
+    const minDaysWithCaloricInfo = 19; // 
     const divId = 'td';
     const recentWeights = tdeeWeight.filter(weight => weight !== 0)
     // Check if there are enough weight entries in the last 3 weeks
@@ -116,6 +115,12 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const w4 = runningWeight(recentWeights, recentWeights.length)
     // Calculate weight change and calories consumed
     const weightChange = w4[w4.length - 1] - w4[0];
+    if (weightChange > 0){
+        const caloriesPerPound = pRatioCalculator(0.5);
+    }
+    else {
+        const caloriesPerPound = pRatioCalculator(0.15);
+    }
     const caloriesConsumed = recentCaloricData.reduce((totalCalories, calories) => totalCalories + calories, 0);
     const averageTDEE = ((weightChange * caloriesPerPound) + caloriesConsumed) / recentCaloricData.length;
     const sum = recentCaloricData.reduce((partialSum, a) => partialSum + a, 0);

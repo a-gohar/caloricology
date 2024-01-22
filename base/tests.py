@@ -11,16 +11,15 @@ class emptyUserGoalsTestCase(TestCase):
                                     password='glass onion')
         self.u2 = User.objects.create_user(username='john1',
                                     email='jlennon1@beatles.com',
-                                    password='glass ')
+                                    password='glass')
     def test_settings(self):
         c1 = Client()
         c2 = Client()
         c1.login(username='john', password="glass onion")
-        c2.login(username="john1", password="glass onion")
+        c2.login(username="john1", password="glass")
         response1 = c1.post(reverse("Settings"), data={'weekly_target': "1", "tdee": "1000"}, follow=True)
-        response2 = c2.post(reverse("Settings"), data={"weekly_target": "-1", "tdee": "200"})
-        print(r
-        g1 = self.u1.user_goals
+        response2 = c2.post(reverse("Settings"), data={"weekly_target":"-1", "tdee":"1000"})
         g2 = self.u2.user_goals
-        self.assertEqual(0.5, self.u1.pRatio)
-        self.assertEqual(0.15, self.u2.pRatio)
+        g1 = self.u1.user_goals
+        self.assertEqual(50, g1.pRatio)
+        self.assertEqual(15, g2.pRatio)

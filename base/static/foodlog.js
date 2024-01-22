@@ -47,7 +47,7 @@ let currentDate = new Date();
 async function navigateDay(offset) {
     currentDate.setDate(currentDate.getDate() + offset);
     updateCurrentDate();
-    updateFoodLog();
+    updateFoodLog(energyExpenditure);
 }
 
 // Function to update the food log based on the current date
@@ -59,7 +59,10 @@ async function updateFoodLog(energy) {
         if (xhr.readyState === 4 && xhr.status === 200) {
             // Parse the JSON response
             consumedCalories = 0;
-            remainingCalilories = 0;
+            remainingCalories = 0;
+            dailyProtein = 0;
+            dailyFat = 0;
+            dailyCarb = 0;
             var response = JSON.parse(xhr.responseText);
 
             // Update the food log based on the fetched content
@@ -82,6 +85,9 @@ async function updateFoodLog(energy) {
                 foodLogContainer.appendChild(foodEntryElement);
 
                 consumedCalories += entry.calories;
+                dailyProtein += entry.protein;
+                dailyFat += entry.fat;
+                dailyCarb += entry.carbs
             });
         }
         remainingCalories = energy - consumedCalories;
@@ -109,9 +115,11 @@ async function removeFood(foodName, foodDate, foodCalories) {
 function updateCalorieSummary() {
     const consumedCaloriesElement = document.getElementById('consumed-calories');
     const remainingCaloriesElement = document.getElementById('remaining-calories');
-
-    consumedCaloriesElement.innerHTML = `<h3> Consumed Calories: ${consumedCalories} </h3>`;
-    remainingCaloriesElement.innerHTML = `<h3> Remaining Calories: ${remainingCalories} </h3>`;
+    consumedCaloriesElement.innerText = ` Consumed : ${consumedCalories}  calories\r\n`;
+    consumedCaloriesElement.innerText += `${dailyProtein}g Protein \r\n`;
+    consumedCaloriesElement.innerText += `${dailyFat}g Fat\r\n`
+    consumedCaloriesElement.innerText += `${dailyCarb}g Carb`
+    remainingCaloriesElement.innerText = `Remaining Calories: ${remainingCalories} `;
 }
 // Function to update the displayed current date
 function updateCurrentDate() {
@@ -127,8 +135,7 @@ function pRatioCalculator(p) {
 }
 function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minEntries = 3;
-    const minDaysWithCaloricInfo = 19;
-    const caloriesPerPound = pRatioCalculator(p); // 
+    const minDaysWithCaloricInfo = 19; // 
     const recentWeights = tdeeWeight.filter(weight => weight !== 0)
     // Check if there are enough weight entries in the last 3 weeks
     if (recentWeights.length < minEntries) {
@@ -142,6 +149,12 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const w4 = runningWeight(recentWeights, recentWeights.length)
     // Calculate weight change and calories consumed
     const weightChange = w4[w4.length - 1] - w4[0];
+    if (weightChange > 0){
+        const caloriesPerPound = fCalculator(0.5);
+    }
+    else {
+        const caloriesPerPound = pRatioCalculator(0.15);
+    }
     const caloriesConsumed = recentCaloricData.reduce((totalCalories, calories) => totalCalories + calories, 0);
     const averageTDEE = ((weightChange * caloriesPerPound) + caloriesConsumed) / recentCaloricData.length;
     return averageTDEE.toFixed(2);
@@ -197,6 +210,9 @@ function get_daily_caloric(week_calories, pRatio) {
 // Initial setup
 let consumedCalories = 0;
 let remainingCalories = 0;
+let dailyProtein = 0;
+let dailyCarb = 0;
+let dailyFat = 0;
 updateCurrentDate();
 updateFoodLog(2000);
 const fetchData = async () => {
