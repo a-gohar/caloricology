@@ -119,7 +119,7 @@ function updateCalorieSummary() {
     consumedCaloriesElement.innerText += `${dailyProtein}g Protein \r\n`;
     consumedCaloriesElement.innerText += `${dailyFat}g Fat\r\n`
     consumedCaloriesElement.innerText += `${dailyCarb}g Carb`
-    remainingCaloriesElement.innerText = `Remaining Calories: ${remainingCalories} `;
+    remainingCaloriesElement.innerText = `Remaining Calories: ${remainingCalories.toFixed(2)} `;
 }
 // Function to update the displayed current date
 function updateCurrentDate() {
@@ -150,7 +150,7 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     // Calculate weight change and calories consumed
     const weightChange = w4[w4.length - 1] - w4[0];
     if (weightChange > 0){
-        const caloriesPerPound = fCalculator(0.5);
+        const caloriesPerPound = pRatioCalculator(0.5);
     }
     else {
         const caloriesPerPound = pRatioCalculator(0.15);
@@ -218,7 +218,7 @@ updateFoodLog(2000);
 const fetchData = async () => {
     try {
         const { tdee, pRatio, weekly_target, caloricData, weightInfo } = await get_user_information();
-        const energyExpenditure = updateTDEE(tdee, pRatio, caloricData, weightInfo) + get_daily_caloric(weekly_target, pRatio);
+        const energyExpenditure = updateTDEE(tdee, pRatio, caloricData, weightInfo) + get_daily_caloric(weekly_target, pRatio / 100);
         updateFoodLog(energyExpenditure);
     }
     catch (error) {
