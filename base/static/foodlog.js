@@ -162,7 +162,7 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
 
 function runningWeight(mArray, mRange) {
     var k = 2 / (mRange + 1);
-    emaArray = [mArray[0]];
+    const emaArray = [mArray[0]];
     for (var i = 1; i < mArray.length; i++) {
         emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
     }
