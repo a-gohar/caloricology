@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta
-    name="description"
-    content="A nutrition coaching and calorie counting application "
-  />
+    <meta name="description" content="A nutrition coaching and calorie counting application " />
     <title>Calorie Tracker</title>
     <style>
         body {
@@ -39,15 +37,36 @@
             font-weight: bold;
             background-color: #3498db;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 2px;
             transition: background-color 0.3s;
         }
 
         a:hover {
             background-color: #2980b9;
         }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
+            header,
+            nav {
+                padding: 8px;
+            }
+
+            nav a {
+                margin: 0 5px;
+                font-size: 14px;
+            }
+
+            main {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
+
 <body>
     <h1>Welcome to the Calorie Tracker!</h1>
     <p>
@@ -61,4 +80,5 @@
         <a href="/accounts/signup">register</a>.
     </p>
 </body>
+
 </html>
