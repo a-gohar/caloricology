@@ -215,10 +215,11 @@ let dailyCarb = 0;
 let dailyFat = 0;
 updateCurrentDate();
 updateFoodLog(2000);
+let energyExpenditure = 2000
 const fetchData = async () => {
     try {
         const { tdee, pRatio, weekly_target, caloricData, weightInfo } = await get_user_information();
-        const energyExpenditure = updateTDEE(tdee, pRatio, caloricData, weightInfo) + get_daily_caloric(weekly_target, pRatio / 100);
+        energyExpenditure = updateTDEE(tdee, pRatio, caloricData, weightInfo) + get_daily_caloric(weekly_target, pRatio / 100);
         updateFoodLog(energyExpenditure);
     }
     catch (error) {
