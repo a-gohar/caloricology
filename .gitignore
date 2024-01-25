@@ -12,3 +12,4 @@ accounts/migrations/
 base/migrations
 accounts/migrations
 base/__pycache__
+get_updates.sh
