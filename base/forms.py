@@ -2,7 +2,7 @@ from django import forms
 from .models import user_goals, savedFood
 
 class weightForm(forms.Form):
-    date = forms.DateField(label="Date")
+    date = forms.DateField(label="Date", widget=forms.SelectDateWidget)
     weight = forms.IntegerField(label="Weight", min_value=0, max_value=500)
 class editDayForm(forms.Form):
     date = forms.DateField(label="Date you wish to edit:")
@@ -15,7 +15,7 @@ class userGoalsForm(forms.ModelForm):
         
     
 class addFoodForm(forms.Form):
-    date = forms.DateField(label="What day do you want to add food?")
+    date = forms.DateField(label="What day do you want to add food?", widget=forms.SelectDateWidget)
     food_name = forms.ModelChoiceField(queryset=savedFood.objects.all(), empty_label="Select a food")
     volume = forms.IntegerField(label="Weight in grams?")
 class saveFoodForm(forms.Form):
