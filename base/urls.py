@@ -17,5 +17,7 @@ urlpatterns = [
     path("get-goals", views.get_goals, name="Goals"),
     path("logout", views.logout_view, name="Logout"),
     path('remove-food', views.delete_food, name='remove_food'),
-    path("download", views.download_data, name="data_download")
+    path("download", views.download_data, name="data_download"),
+    path("commonfood", views.common_food_search, name="data_download"),
+    path("commonfoodlog", views.common_food_log, name="log common food")
 ]

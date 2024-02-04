@@ -3,12 +3,14 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidde
 from django.template import loader
 from .models import food, savedFood, macro_day, user_goals
 from django.contrib.auth.decorators import login_required
-from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm, userGoalsForm
+from .forms import saveFoodForm, editDayForm, addFoodForm, weightForm, userGoalsForm, commonFoodForm
 from django.http import JsonResponse
 from django.contrib.auth import logout
 from django.views import generic
 from datetime import date, timedelta
+from .helpers import update_macro_day, usda_api
 import json
+import requests
 
 # The weight class was moved to one to one
 def index(request):
@@ -194,3 +196,38 @@ def download_data(request):
     macro_day_objects = macro_day.objects.filter(owner=request.user)
     serialized_data = [{"date":entry.date, "weight": entry.weight, "calories": entry.calories} for entry in macro_day_objects ]
     return JsonResponse({"data": serialized_data})
+
+@login_required
+def common_food_search(request):
+    if request.method == "POST":
+        try:
+            form = commonFoodForm(request.POST)
+            if not form.is_valid():
+                return JsonResponse({"error": {"code": "403"}})
+            data = form.cleaned_data
+            query = data["food_query"]
+            foodResults = usda_api(query)
+            return JsonResponse({"foods": foodResults})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"error": {"code": "400"}})
+    else:
+        return render(request, "base/commonfood.html", {"form": commonFoodForm()})
+
+@login_required
+def common_food_log(request):
+    if request.method ==  "POST":
+        try: 
+            data = json.loads(request.body)
+            print(data)
+            macroDayObject = macro_day.objects.get_or_create(date=data["date"], owner=request.user)[0]
+            print(macroDayObject)
+            response = update_macro_day(macroDayObject, data)
+            if response:
+                return JsonResponse({"success": {"id": "common_food"}})
+            else:
+                print("error")
+                return JsonResponse({"error": {"code": "400" }})
+        except Exception as e:
+            print(e)
+            return JsonResponse({"error": {"code": "400"}})
