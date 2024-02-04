@@ -106,7 +106,7 @@ async function removeFood(foodName, foodDate, foodCalories) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             // Refresh the food log after successful removal
-            updateFoodLog();
+            updateFoodLog(energyExpenditure);
         }
     };
     console.log(foodDate)
