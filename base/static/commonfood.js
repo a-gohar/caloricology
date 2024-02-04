@@ -9,6 +9,10 @@ async function updateFoodResults() {
 
     const data = await response.json();
     console.log(data)
+    if ("error" in data){
+        alert("There was an error.")
+        return false;
+    }
     const resultsDiv = document.getElementById('foodResults');
     resultsDiv.innerHTML = '';  // Clear previous results
 

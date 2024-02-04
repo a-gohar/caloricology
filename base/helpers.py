@@ -21,7 +21,6 @@ def usda_api(query):
 
     # Make the POST request
     response = requests.post(url, json=payload, headers=headers)
-    print(response)
     if response.status_code == 200:
         data = response.json()
         res = []
@@ -31,6 +30,8 @@ def usda_api(query):
                        "fat":  nutrients[1]["value"], "carb":  nutrients[2]["value"],
                        "calories": nutrients[3]["value"]})
         return res
+    else:
+        return False
 
 def update_macro_day(dayObject, jsonData):
     try:

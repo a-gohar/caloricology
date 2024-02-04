@@ -207,6 +207,8 @@ def common_food_search(request):
             data = form.cleaned_data
             query = data["food_query"]
             foodResults = usda_api(query)
+            if not foodResults:
+                return JsonResponse({"error": {"code":"500"}})
             return JsonResponse({"foods": foodResults})
         except Exception as e:
             print(e)
