@@ -219,15 +219,11 @@ def common_food_log(request):
     if request.method ==  "POST":
         try: 
             data = json.loads(request.body)
-            print(data)
             macroDayObject = macro_day.objects.get_or_create(date=data["date"], owner=request.user)[0]
-            print(macroDayObject)
             response = update_macro_day(macroDayObject, data)
             if response:
                 return JsonResponse({"success": {"id": "common_food"}})
             else:
-                print("error")
                 return JsonResponse({"error": {"code": "400" }})
         except Exception as e:
-            print(e)
             return JsonResponse({"error": {"code": "400"}})
