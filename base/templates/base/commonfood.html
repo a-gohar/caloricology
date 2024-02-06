@@ -1,21 +1,23 @@
-
 <html lang="en">
+
 <head>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-{% load static %}
-<link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
+    <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
 </head>
-<body>
-<form id="commonfood" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Search</button>
-</form>
 
-<div id="foodResults"></div>
+<body>
+    <form id="commonfood" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    <div id="foodResults"></div>
 </body>
 <style>
     .food-item {
@@ -25,4 +27,5 @@
     }
 </style>
 <script src="{% static 'commonfood.js' %}"> </script>
+
 </html>

@@ -28,16 +28,29 @@ function loadForm(option, event) {
     xhr.send();
     return false;
 }
-function addFood() {
-    // Add functionality for adding food
-    closePopupForm();
+
+function unhideButtons(showCommonAndCreated){
+    var commonFoodButton = document.getElementById("commonFood");
+    var userFoodButton = document.getElementById("userFood");
+    var createFoodButton = document.getElementById("createFood");
+    var weightButton = document.getElementById("weight");
+    if (showCommonAndCreated) {
+        commonFoodButton.removeAttribute("hidden");
+        userFoodButton.removeAttribute("hidden");
+        createFoodButton.removeAttribute("hidden");
+        weightButton.setAttribute("hidden", "");
+    } else {
+        commonFoodButton.setAttribute("hidden", "");
+        userFoodButton.setAttribute("hidden", "");
+        createFoodButton.setAttribute("hidden", "");
+        weightButton.removeAttribute("hidden");
+    }
 }
 
-// Sample food log data (replace this with data from your backend)
+
 const foodLogData = [
     { name: 'Food 1', calories: 300, protein: 0, fat: 0, carbs: 0 },
     { name: 'Food 2', calories: 500, protein: 0, fat: 0, carbs: 0 },
-    // Add more food log entries as needed
 ];
 
 // Initial date
@@ -127,7 +140,7 @@ function updateCurrentDate() {
     currentDayElement.textContent = currentDate.toDateString();
 }
 function closePopupForm() {
-    updateFoodLog();
+    updateFoodLog(energyExpenditure);
     document.getElementById('popup-form').style.display = 'none';
 }
 function pRatioCalculator(p) {

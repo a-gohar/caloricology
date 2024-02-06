@@ -1,4 +1,12 @@
-<h1> Create new food: </h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
+</head>
+<body>
+
 <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
 <form action="createfood" method="post", target="dummyframe">
@@ -6,3 +14,5 @@
     {{ form }}
     <input type="submit" value="SUBMIT">
 </form>
+</body>
+</html>
