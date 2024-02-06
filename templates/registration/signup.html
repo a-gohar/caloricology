@@ -1,11 +1,25 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="description" content="A nutrition coaching and calorie counting application " />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sign up</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
+    <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
+</head>
+<body>
 
 {% block content %}
   <h2>Sign up.</h2>
-  <h3> After signning up, go to Settings to update default values</h3>
+  <h3> After signing up, go to Settings to set target goals</h3>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Sign Up</button>
   </form>
 {% endblock %}
+
+</body></html>
