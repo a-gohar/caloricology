@@ -11,8 +11,7 @@
 </head>
 
 <body>
-    <form id="commonfood" method="post">
-        {% csrf_token %}
+    <form id="commonfood",method="post" onsubmit="updateFoodResults(this, event)">
         {{ form.as_p }}
         <button type="submit">Search</button>
     </form>

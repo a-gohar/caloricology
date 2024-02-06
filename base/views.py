@@ -201,11 +201,8 @@ def download_data(request):
 def common_food_search(request):
     if request.method == "POST":
         try:
-            form = commonFoodForm(request.POST)
-            if not form.is_valid():
-                return JsonResponse({"error": {"code": "403"}})
-            data = form.cleaned_data
-            query = data["food_query"]
+            form = request.body
+            query = json.loads(form)["food_query"]
             foodResults = usda_api(query)
             if not foodResults:
                 return JsonResponse({"error": {"code":"500"}})

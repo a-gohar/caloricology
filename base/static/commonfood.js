@@ -1,15 +1,22 @@
-async function updateFoodResults() {
-    const form = document.getElementById('commonfood');
-    const formData = new FormData(form);
-
+async function updateFoodResults(form, e) {
+    e.preventDefault()
+    var serializedForm = new FormData(form);
+    var formData = JSON.stringify(Object.fromEntries(serializedForm));
+    console.log(formData)
     const response = await fetch('/commonfood', {
         method: 'POST',
         body: formData,
+        credentials: "same-origin",
+        headers: {
+            'Content-Type': 'application/json',
+            "X-CSRFToken": getCookie('csrftoken')
+        }
     });
+    
 
     const data = await response.json();
     console.log(data)
-    if ("error" in data){
+    if ("error" in data) {
         alert("There was an error.")
         return false;
     }
@@ -134,7 +141,7 @@ async function updateFoodResults() {
                 });
 
                 const responseData = await logResponse.json();
-                if (!("error" in responseData)){
+                if (!("error" in responseData)) {
                     resultsDiv.innerHTML = '';
                 }
                 else {
