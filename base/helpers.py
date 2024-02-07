@@ -9,7 +9,7 @@ def usda_api(query):
 
     payload = {
         "query": query,
-        'dataType': ["Survey (FNDDS)"]
+        'dataType': ["Survey (FNDDS)", "Branded"]
     }
 
     # Headers
