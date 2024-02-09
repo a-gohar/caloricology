@@ -24,7 +24,7 @@ def usda_api(query):
     if response.status_code == 200:
         data = response.json()
         res = []
-        for item in data["foods"][0:4]:
+        for item in data["foods"][0:6]:
             nutrients = item["foodNutrients"]
             res.append({"name": item["description"], "protein":  nutrients[0]["value"],
                        "fat":  nutrients[1]["value"], "carb":  nutrients[2]["value"],
