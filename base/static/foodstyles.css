@@ -12,16 +12,11 @@
            text-align: center;
        }
 
-       nav {
-           background-color: #444;
-           color: #fff;
-           padding: 10px;
-           text-align: center;
-       }
 
        nav {
            background-color: #444;
-           padding: 20px;
+           color: #fff;
+            padding: 20px;
            text-align: center;
        }
 
@@ -162,23 +157,30 @@
            font-size: 18px;
            cursor: pointer;
        }
+
        button {
-        background-color: #3498db; /* Blue */
-        color: #fff; /* White text */
-        border: 2px solid #3498db; /* Blue border */
-        padding: 10px 20px;
-        font-family: 'Arial', sans-serif;
-        font-size: 16px;
-        font-weight: bold;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow */
-        transition: background-color 0.3s ease; /* Smooth transition */
-    }
-    
-    button:hover {
-        background-color: #2980b9; /* Darker blue on hover */
-    }
-    
-      
+           background-color: #3498db;
+           /* Blue */
+           color: #fff;
+           /* White text */
+           border: 2px solid #3498db;
+           /* Blue border */
+           padding: 10px 20px;
+           font-family: 'Arial', sans-serif;
+           font-size: 16px;
+           font-weight: bold;
+           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+           /* Box shadow */
+           transition: background-color 0.3s ease;
+           /* Smooth transition */
+       }
+
+       button:hover {
+           background-color: #2980b9;
+           /* Darker blue on hover */
+       }
+
+
 
        @media only screen and (max-width: 600px) {
            body {

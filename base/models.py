@@ -28,7 +28,7 @@ class user_goals(models.Model):
 class macro_day(models.Model):
     owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, default=1)
     date = models.DateField(default="2024-01-01")
-    weight = models.IntegerField(default = 0)
+    weight = models.FloatField(default = 0)
     calories = models.IntegerField(default = 0)
     pro = models.IntegerField(default = 0)
     fat = models.IntegerField(default = 0)
