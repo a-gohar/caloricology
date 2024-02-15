@@ -12,17 +12,60 @@ from .helpers import update_macro_day, usda_api
 import json
 import requests
 
-# The weight class was moved to one to one
+# Here all all of the views for the static webpages. 
+
 def index(request):
+    """View that returns the default index.html page for Countcals
+
+    Args:
+        request The request passed into Django
+
+    Returns:
+        index.html: Site code
+    """
     return render(request, "base/index.html")
 
 @login_required
 def foodlog(request):
+    """Function to return the foodlog.
+    User must be logged in current session
+
+    Args:
+        request: DJANGO request
+
+    Returns:
+        foodlog.html file.
+    """
     if request.method == "GET":
         return render(request, "base/foodlog.html", {"Username": request.user.first_name})
+
+@login_required
+def dashboard(request):
+    """Dashboard page.
+
+    """
+    if request.method == "GET":
+        try:
+            days = macro_day.objects.filter()
+            return render(request, "dashboard.html", {"Username": request.user.first_name})
+        except Exception as e:
+            print(e)
+            return HttpResponse()
+        
+#These functions are all API calls. 
+#WARNING: MAKE SURE ANY CHANGES HAVE CORRESPONDING CHANGES ON FRONT END.
     
 @login_required
-def get_goals(request):
+def get_goals(request) -> JsonResponse:
+    """This function returns the user_goals
+    as well as last 21 days of total calories and logged weight
+
+    Args:
+        request: Django request object
+
+    Returns:
+        JsonResponse: JSON object containing success code, and user information as requested.
+    """
     goalObject = user_goals.objects.get_or_create(owner=request.user)[0]
     i = 21
     serialized_days = []
@@ -35,7 +78,15 @@ def get_goals(request):
     return JsonResponse({"goals": serialized_data, "days" : serialized_days})
     
 @login_required
-def get_weights(request):
+def get_weights(request) -> JsonResponse:
+    """Returns a JSON object containing all weight information to plot charts on front-end
+
+    Args:
+        request (_type_): _description_
+
+    Returns:
+        JsonResponse: JsonResponse object
+    """
     day = macro_day.objects.filter(owner=request.user)
     serialized_data = []
     for entry in day:
@@ -43,32 +94,27 @@ def get_weights(request):
             serialized_data.append({"Date": str(entry.date), "weight": entry.weight})
     return JsonResponse({"weights":serialized_data})
     
-@login_required
-def update_goals(request):
-    if request.method == "POST":
-        pass
+
 
 @login_required
-def update_food_log(request):
+def update_food_log(request) -> JsonResponse:
+    """This function will provide the users food entries to populate the food-log
+    
+
+    Args:
+        request 
+
+    Returns:
+        JsonResponse: JSON object
+    """
     date = request.GET.get('date')
     macro = macro_day.objects.get_or_create(date=date[0:10], owner=request.user)
-    # Assuming FoodEntry model has a field 'date' representing the date of the entry
     food_entries = food.objects.filter(day=macro[0])
-    # You may need to serialize the data appropriately based on your model structure
     serialized_data = [{'name': entry.name, 'calories': entry.cal, 'protein': entry.protein,
                         'fat': entry.fat, 'carbs': entry.carbs} for entry in food_entries]
     # Return the serialized data as JSON
     return JsonResponse({'food_log': serialized_data})
     
-@login_required
-def dashboard(request):
-    if request.method == "GET":
-        try:
-            days = macro_day.objects.filter()
-            return render(request, "dashboard.html", {"Username": request.user.first_name})
-        except Exception as e:
-            print(e)
-            return HttpResponse()
 
 
 @login_required
@@ -93,6 +139,7 @@ def addWeight(request):
 
 @login_required
 def edit_day(request):
+    #TODO: Finish function
     if request.method == "GET":
         form = editDayForm()
         return render(request, "base/editday.html", {"form": form} )
@@ -105,6 +152,14 @@ def foodForm(request):
         
 @login_required
 def addfood(request):
+    """This is the corresponding view for the addfood form
+    Returns the form at get request otherwise updates the food information as required
+    TODO: Migrate to JSON
+    Args:
+        request
+
+   
+    """
     if request.method == "GET":
         form = addFoodForm()
         form.fields['food_name'].queryset = savedFood.objects.filter(owner=request.user)
@@ -138,6 +193,7 @@ def addfood(request):
 
 @login_required
 def create_food(request):
+    #View corresponding to create food option
     if request.method == "GET":
         form = saveFoodForm()
         return render(request, "base/createfood.html", {"form": form})
@@ -153,6 +209,7 @@ def create_food(request):
 
 @login_required
 def settings(request):
+    #View corresponding to updating settings.html form
     user = request.user
     user_goals_obj = user_goals.objects.get_or_create(owner=user)[0]
     if request.method == 'POST':
@@ -172,11 +229,20 @@ def settings(request):
 
 @login_required
 def logout_view(request):
+    #This view will log a user out.
     logout(request)
     return HttpResponseRedirect("index")
 
 @login_required
 def delete_food(request):
+    """This function is called to delete a food at a specific day
+
+    Args:
+        request: Contains JSON object with food information and date
+
+    Returns:
+        _type_: _description_
+    """
     if request.method == "GET":
         return HttpResponseBadRequest(status=400)
     else:
@@ -193,12 +259,19 @@ def delete_food(request):
         
 @login_required
 def download_data(request):
+    """Returns all of the users information
+
+    Args:
+        request: Django request
+
+    """
     macro_day_objects = macro_day.objects.filter(owner=request.user)
     serialized_data = [{"date":entry.date, "weight": entry.weight, "calories": entry.calories} for entry in macro_day_objects ]
     return JsonResponse({"data": serialized_data})
 
 @login_required
 def common_food_search(request):
+    #This function searches the food database and returns the information to the client
     if request.method == "POST":
         try:
             form = request.body
@@ -215,6 +288,12 @@ def common_food_search(request):
 
 @login_required
 def common_food_log(request):
+    """Logs a food.
+    TODO: Merge with addfood
+    Args:
+        request (_type_): _description_
+_
+    """
     if request.method ==  "POST":
         try: 
             data = json.loads(request.body)
