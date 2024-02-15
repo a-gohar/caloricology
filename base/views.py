@@ -169,6 +169,7 @@ def addfood(request):
         try:
             form = addFoodForm(request.POST)
             if not form.is_valid():
+                print(savedFood.objects.filter(owner=request.user))
                 return HttpResponseBadRequest("Invalid form")
             data = form.cleaned_data
             today = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
@@ -295,7 +296,7 @@ def common_food_log(request):
 _
     """
     if request.method ==  "POST":
-        try: 
+        try:
             data = json.loads(request.body)
             macroDayObject = macro_day.objects.get_or_create(date=data["date"], owner=request.user)[0]
             response = update_macro_day(macroDayObject, data)

@@ -19,5 +19,5 @@ urlpatterns = [
     path('remove-food', views.delete_food, name='remove_food'),
     path("download", views.download_data, name="data_download"),
     path("commonfood", views.common_food_search, name="data_download"),
-    path("commonfoodlog", views.common_food_log, name="log common food")
+    path("commonfoodlog", views.common_food_log, name="log_common_food")
 ]
