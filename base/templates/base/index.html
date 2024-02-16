@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    {% block extra_head %}{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A nutrition coaching and calorie counting application " />
     <title>Calorie Tracker</title>
@@ -65,6 +66,7 @@
             }
         }
     </style>
+    {% include 'analytics.html' %}
 </head>
 
 <body>

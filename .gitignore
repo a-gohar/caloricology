@@ -14,3 +14,4 @@ accounts/migrations
 base/__pycache__
 get_updates.sh
 base/keys.py
+base/templates/base/analytics.html

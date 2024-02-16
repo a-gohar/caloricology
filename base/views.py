@@ -12,6 +12,7 @@ from .helpers import update_macro_day, usda_api
 import json
 import requests
 
+
 # Here all all of the views for the static webpages. 
 
 def index(request):
@@ -169,7 +170,6 @@ def addfood(request):
         try:
             form = addFoodForm(request.POST)
             if not form.is_valid():
-                print(savedFood.objects.filter(owner=request.user))
                 return HttpResponseBadRequest("Invalid form")
             data = form.cleaned_data
             today = macro_day.objects.get_or_create(owner=request.user, date=data["date"])
