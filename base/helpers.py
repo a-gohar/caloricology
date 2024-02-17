@@ -1,11 +1,11 @@
 import requests
 from .models import macro_day, food
-from .keys import KEY
+from .keys import KEY, URL
 
 def usda_api(query):
-    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
+    
 
-    url += "?api_key=" + KEY
+    url = URL + "?api_key=" + KEY
 
     payload = {
         "query": query,
