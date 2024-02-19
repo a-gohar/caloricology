@@ -9,17 +9,31 @@
     <title>Food Log</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
 </head>
 <body>
-    <header>
-        <h1>Food Log</h1>
+    <header class="p-3 bg-dark text-white text-center">
+        <div class="container">
+            <h1>Food Log</h1>
+        </div>
     </header>
-    <nav>
-        <!-- Add navigation links or menu items relevant to your dashboard -->
-        <a href="dashboard">Dashboard</a> |
-        <a href="settings">Profile</a> |
-        <a href="logout">Logout</a>
+    <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
+    <ul class="navbar-nav">
+        <li class="active">
+            <a class="nav-link" href="dashboard"> Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="foodlog">Food Log</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="settings">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
     </nav>
     <main>
         
@@ -44,9 +58,9 @@
         </div>
 
     </main>
-    <div id="fab-container">
+    <div id="fab-container" class="position-fixed bottom-0 end-0 p-3">
         {% verbatim %}
-        <button id="fab" onclick="openPopupForm()">+</button>
+        <button id="fab" class="btn btn-primary rounded-circle" onclick="openPopupForm()">+</button>
         {% endverbatim %}
     </div>
 
@@ -67,7 +81,9 @@
             <div id="dynamic-form-container"style="height: 200px; overflow-y: auto;">
                 <!-- The form will be loaded here based on the option clicked -->
             </div>
-    </div>
+        </div>
 <script src="{% static 'foodlog.js' %}"> </script>
 <script src="{% static 'commonfood.js' %}"> </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
 </html>

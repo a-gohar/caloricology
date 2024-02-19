@@ -11,42 +11,69 @@
     <title>Dashboard</title>
     {% include 'analytics.html' %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'foodstyles.css' %}">
-    <link rel=”stylesheet” href=”https://unpkg.com/material-components-web/dist/material-components-web.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        container{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>Dashboard</h1>
+    <header class="p-3 bg-dark text-white text-center">
+        <div class="container">
+            <h1>Dashboard</h1>
+        </div>
     </header>
-    <nav>
-        <a href="foodlog">Food Log</a> |
-        <a href="settings">Profile</a> |
-        <a href="logout">Logout</a>
+    <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
+    <ul class="navbar-nav">
+        <li class="active">
+            <a class="nav-link" href="dashboard"> Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="foodlog">Food Log</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="settings">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="logout">Logout</a>
+        </li>
+      </ul>
+    </div>
     </nav>
-    <main>
+    <main class="container mt-4">
         <h2>Welcome, {{ Username }}!</h2>
         <div class="calorie-summary">
-            <div id="weightTrend">
-                <h3> Weight Trend </h3>
-                <canvas id="weightChart" style="width:100%;max-width:500px;height:100px"></canvas>
-            </div>
-            <div id="td">
-                <h3> TDEE:</h3>
+            <div class="row">
+                <div class="col-md-6 mb-4"> 
+                    <div id="weightTrend">
+                        <h3>Weight Trend</h3>
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4"> 
+                    <div id="td">
+                        <h3>TDEE:</h3>
+                    </div>
+                </div>
             </div>
         </div>
-        <h2> Instructions</h2>
-        Before beginning logging food please fill out your current estimated daily energy expenditure (TDEE) and weekly weight change targets in kg. <br>
+        <h2>Instructions</h2>
+        <p class="mb-4">Before beginning logging food please fill out your current estimated daily energy expenditure (TDEE) and weekly weight change targets in kg. <br>
         If you do not have an estimated energy expenditure, there are several calculators available online. <br>
         To log a food, you must first supply a name for the food as well as caloric information per 100g. <br>
         You may then repeatedly log it from the option menu by providing the amount of food consumed in grams. <br>
         The website will keep a running average of your weight changes smoothed out to avoid daily fluctuations. <br>
-        If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure, otherwise it will fall back to the energy expenditure provided.
+        If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure, otherwise it will fall back to the energy expenditure provided.</p>
     </main>
-    <footer>
-        <p>&copy; Caloricology </p>
-        support@caloricology.com
+    <footer class="p-3 bg-dark text-white">
+        <div class="container">
+            <p>&copy; Caloricology</p>
+            <p>support@caloricology.com</p>
+        </div>
     </footer>
-</body>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'dashboard.js' %}"> </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
 </html>

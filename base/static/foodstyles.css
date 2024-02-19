@@ -34,24 +34,8 @@
            right: 20px;
        }
 
-       #fab {
-           background-color: #4285f4;
-           color: #fff;
-           border: none;
-           border-radius: 50%;
-           padding: 15px;
-           font-size: 16px;
-           cursor: pointer;
-           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-           transition: background-color 0.3s ease, transform 0.3s ease;
-       }
+       
 
-       #fab:hover {
-           background-color: #3366cc;
-           /* Change to a darker shade on hover */
-           transform: scale(1.1);
-           /* Add a slight scale effect on hover */
-       }
 
        #popup-form {
            display: none;
