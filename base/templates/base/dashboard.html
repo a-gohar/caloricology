@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <meta
-    name="description"
-    content="A nutrition coaching and calorie counting application "
-  />
+    <meta name="description" content="A nutrition coaching and calorie counting application " />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dashboard</title>
     {% include 'analytics.html' %}
     {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
-        container{
+        container {
             text-align: center;
+        }
+
+        .navbar-nav {
+            -webkit-flex-direction: row;
+            -ms-flex-direction: row;
+            flex-direction: row;
         }
     </style>
 </head>
+
 <body>
     <header class="p-3 bg-dark text-white text-center">
         <div class="container">
@@ -25,33 +31,33 @@
         </div>
     </header>
     <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
-    <ul class="nav navbar-nav">
-        <li class="active">
-            <a class="nav-link" href="dashboard"> Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="foodlog">Food Log</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="settings">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="logout">Logout</a>
-        </li>
-      </ul>
-    </div>
+        <ul class="nav navbar-nav">
+            <li class="active">
+                <a class="nav-link" href="dashboard"> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="foodlog">Food Log</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="settings">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="logout">Logout</a>
+            </li>
+        </ul>
+        </div>
     </nav>
     <main class="container mt-4">
         <h2>Welcome, {{ Username }}!</h2>
         <div class="calorie-summary">
             <div class="row">
-                <div class="col-md-6 mb-4"> 
+                <div class="col-md-6 mb-4">
                     <div id="weightTrend">
                         <h3>Weight Trend</h3>
                         <canvas id="weightChart"></canvas>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4"> 
+                <div class="col-md-6 mb-4">
                     <div id="td">
                         <h3>TDEE:</h3>
                     </div>
@@ -59,12 +65,15 @@
             </div>
         </div>
         <h2>Instructions</h2>
-        <p class="mb-4">Before beginning logging food please fill out your current estimated daily energy expenditure (TDEE) and weekly weight change targets in kg. <br>
-        If you do not have an estimated energy expenditure, there are several calculators available online. <br>
-        To log a food, you must first supply a name for the food as well as caloric information per 100g. <br>
-        You may then repeatedly log it from the option menu by providing the amount of food consumed in grams. <br>
-        The website will keep a running average of your weight changes smoothed out to avoid daily fluctuations. <br>
-        If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure, otherwise it will fall back to the energy expenditure provided.</p>
+        <p class="mb-4">Before beginning logging food please fill out your current estimated daily energy expenditure
+            (TDEE) and weekly weight change targets in kg. <br>
+            If you do not have an estimated energy expenditure, there are several calculators available online. <br>
+            To log a food, you must first supply a name for the food as well as caloric information per 100g. <br>
+            You may then repeatedly log it from the option menu by providing the amount of food consumed in grams. <br>
+            The website will keep a running average of your weight changes smoothed out to avoid daily fluctuations.
+            <br>
+            If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure,
+            otherwise it will fall back to the energy expenditure provided.</p>
     </main>
     <footer class="p-3 bg-dark text-white">
         <div class="container">
@@ -72,8 +81,11 @@
             <p>support@caloricology.com</p>
         </div>
     </footer>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{% static 'dashboard.js' %}"> </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'dashboard.js' %}"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
