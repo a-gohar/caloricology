@@ -16,4 +16,4 @@ get_updates.sh
 base/keys.py
 base/templates/base/analytics.html
 accounts/forms.py
-accounts/signup.html
+
