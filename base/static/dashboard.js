@@ -26,9 +26,11 @@ function getWeights() {
                                 weight.push(entry.weight);
                                 weightDates.push(entry.Date);
                             }
-                            dates.push(entry.Date)
-                            total_caloric_data.push(entry.calories)
-                            protein.push(entry.protein)
+                            if (entry.totalCaloricData > 0) {
+                                dates.push(entry.Date)
+                                total_caloric_data.push(entry.calories)
+                                protein.push(entry.protein)
+                            }
                         });
 
                         resolve({ weight, total_caloric_data, protein, dates, weightDates });
@@ -64,15 +66,6 @@ function plotWeightTrend(weightData, weightTrend, dateLabels) {
                     }
                 ]
             },
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: function (context) {
-                            return context.dataset.data[context.dataIndex] !== 0;
-                        }
-                    }
-                }
-            }
         });
 }
 function plotCalorieChart(totalCaloricData, dateLabels) {
@@ -89,15 +82,7 @@ function plotCalorieChart(totalCaloricData, dateLabels) {
                     }
                 ]
             },
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: function (context) {
-                            return context.dataset.data[context.dataIndex] !== 0;
-                        }
-                    }
-                }
-            }
+
         });
 }
 function plotProteinChart(protein, dateLabels) {
@@ -114,15 +99,6 @@ function plotProteinChart(protein, dateLabels) {
                     }
                 ]
             },
-            options: {
-                plugins: {
-                    datalabels: {
-                        display: function (context) {
-                            return context.dataset.data[context.dataIndex] !== 0;
-                        }
-                    }
-                }
-            }
         });
 }
 function pRatioCalculator(p) {
@@ -133,11 +109,11 @@ function pRatioCalculator(p) {
 
 const fetchData = async () => {
     try {
-        const { weight, totalCaloricData, protein, dates, weightDates } = await getWeights();
-        console.log(totalCaloricData)
+        const { weight, total_caloric_data, protein, dates, weightDates } = await getWeights();
+        console.log(total_caloric_data)
         const w2 = runningWeight(weight, weight.length);
         plotWeightTrend(weight, w2, weightDates);
-        plotCalorieChart(totalCaloricData, dates)
+        plotCalorieChart(total_caloric_data, dates)
         plotProteinChart(protein, dates)
     } catch (error) {
         console.error('Error:', error);
