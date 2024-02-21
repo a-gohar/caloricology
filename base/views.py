@@ -91,8 +91,9 @@ def get_weights(request) -> JsonResponse:
     day = macro_day.objects.filter(owner=request.user)
     serialized_data = []
     for entry in day:
-        if entry.weight > 0:
-            serialized_data.append({"Date": str(entry.date), "weight": entry.weight})
+            serialized_data.append({"Date": str(entry.date), "protein": entry.pro,
+                                    "calories": entry.calories,"weight": entry.weight})
+    print(serialized_data)
     return JsonResponse({"weights":serialized_data})
     
 

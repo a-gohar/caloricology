@@ -1,3 +1,12 @@
+function runningWeight(mArray, mRange) {
+    var k = 2 / (mRange + 1);
+    const emaArray = [mArray[0]];
+    for (var i = 1; i < mArray.length; i++) {
+        emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
+    }
+    return emaArray;
+}
+
 function getWeights() {
     return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest();
@@ -8,45 +17,21 @@ function getWeights() {
                     try {
                         var response = JSON.parse(xhr.responseText);
                         const weight = [];
+                        const total_caloric_data = [];
+                        const protein = []
                         const dates = [];
+                        const weightDates = []
                         response.weights.forEach(entry => {
-                            weight.push(entry.weight);
-                            dates.push(entry.Date);
+                            if (entry.weight > 0) {
+                                weight.push(entry.weight);
+                                weightDates.push(entry.Date);
+                            }
+                            dates.push(entry.Date)
+                            total_caloric_data.push(entry.calories)
+                            protein.push(entry.protein)
                         });
 
-                        resolve({ weight, dates });
-                    } catch (error) {
-                        console.error('Error parsing JSON:', error.message);
-                        reject('Error parsing JSON');
-                    }
-                } else {
-                    console.error('HTTP error! Status:', xhr.status);
-                    reject('HTTP error');
-                }
-            }
-        };
-        xhr.send();
-    });
-}
-function get_user_information() {
-    return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'get-goals', true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                    try {
-                        var response = JSON.parse(xhr.responseText);
-                        var tdee = response.goals.tdee;
-                        var pRatio = response.goals.pRatio;
-                        var weekly_target = response.goals.target;
-                        const caloricData = [];
-                        const weightInfo = []
-                        response.days.forEach(entry => {
-                            caloricData.push(entry.cal)
-                            weightInfo.push(entry.weight)
-                        });
-                        resolve({ tdee, pRatio, weekly_target, caloricData, weightInfo });
+                        resolve({ weight, total_caloric_data, protein, dates, weightDates });
                     } catch (error) {
                         console.error('Error parsing JSON:', error.message);
                         reject('Error parsing JSON');
@@ -61,95 +46,106 @@ function get_user_information() {
     });
 }
 
-function plotWeightTrend(weightData, weightTrend, dateLabels) { 
-new Chart(
-    document.getElementById('weightChart'),
-    {
-        type: 'line',
-        data: {
-            labels: dateLabels,
-            datasets: [
-                {
-                    label: 'Weight (Scale)',
-                    data: weightData,
-                }, {
-                    label: "Weight (Average)",
-                    data: weightTrend
+
+function plotWeightTrend(weightData, weightTrend, dateLabels) {
+    new Chart(
+        document.getElementById('weightChart'),
+        {
+            type: 'line',
+            data: {
+                labels: dateLabels,
+                datasets: [
+                    {
+                        label: 'Weight (Scale)',
+                        data: weightData,
+                    }, {
+                        label: "Weight (Average)",
+                        data: weightTrend
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        display: function (context) {
+                            return context.dataset.data[context.dataIndex] !== 0;
+                        }
+                    }
                 }
-            ]
-        },
-        options: {
-            plugins: {
-              datalabels: {
-                 display: function(context) {
-                    return context.dataset.data[context.dataIndex] !== 0; 
-                 }
-              }
             }
-          }
-    });
+        });
 }
-function pRatioCalculator(p){
-    return (p*1800)+(1-p)*9250
+function plotCalorieChart(totalCaloricData, dateLabels) {
+    new Chart(
+        document.getElementById('calorieChart'),
+        {
+            type: 'bar',
+            data: {
+                labels: dateLabels,
+                datasets: [
+                    {
+                        label: 'Consumed Calories',
+                        data: totalCaloricData,
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        display: function (context) {
+                            return context.dataset.data[context.dataIndex] !== 0;
+                        }
+                    }
+                }
+            }
+        });
 }
-function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
-    const minEntries = 3;
-    const minDaysWithCaloricInfo = 19; // 
-    const divId = 'td';
-    const recentWeights = tdeeWeight.filter(weight => weight !== 0)
-    if (recentWeights.length < minEntries) {
-        console.log("Not enough weight entries in the last 3 weeks.");
-        document.getElementById(divId).innerText += ` ${tee.toFixed(2)}`;
-        return;
-    }
-    const recentCaloricData = tdeeCaloricData.filter(calories => calories !== 0);
-    if (recentCaloricData.length < minDaysWithCaloricInfo) {
-        console.log("Not enough days with non-zero caloric information.");
-        document.getElementById(divId).innerText += ` ${tee.toFixed(2)}`;
-        return;
-    }
-    const w4 = runningWeight(recentWeights, recentWeights.length)
-    const weightChange = w4[w4.length - 1] - w4[0];
-    if (weightChange > 0){
-        const caloriesPerPound = pRatioCalculator(0.5);
-    }
-    else {
-        const caloriesPerPound = pRatioCalculator(0.15);
-    }
-    const caloriesConsumed = recentCaloricData.reduce((totalCalories, calories) => totalCalories + calories, 0);
-    const averageTDEE = ((weightChange * caloriesPerPound) + caloriesConsumed) / recentCaloricData.length;
-    const sum = recentCaloricData.reduce((partialSum, a) => partialSum + a, 0);
-    document.getElementById(divId).innerText += `${averageTDEE.toFixed(0)}`;
+function plotProteinChart(protein, dateLabels) {
+    new Chart(
+        document.getElementById('proteinChart'),
+        {
+            type: 'bar',
+            data: {
+                labels: dateLabels,
+                datasets: [
+                    {
+                        label: 'Consumed Protein (g)',
+                        data: protein,
+                    }
+                ]
+            },
+            options: {
+                plugins: {
+                    datalabels: {
+                        display: function (context) {
+                            return context.dataset.data[context.dataIndex] !== 0;
+                        }
+                    }
+                }
+            }
+        });
+}
+function pRatioCalculator(p) {
+    return (p * 1800) + (1 - p) * 9250
 }
 
-function runningWeight(mArray, mRange) {
-    var k = 2 / (mRange + 1);
-    const emaArray = [mArray[0]];
-    for (var i = 1; i < mArray.length; i++) {
-        emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
-    }
-    return emaArray;
-}
+
 
 const fetchData = async () => {
     try {
-        const { weight, dates } = await getWeights();
+        const { weight, totalCaloricData, protein, dates, weightDates } = await getWeights();
+        console.log(totalCaloricData)
         const w2 = runningWeight(weight, weight.length);
-        plotWeightTrend(weight, w2, dates);
+        plotWeightTrend(weight, w2, weightDates);
+        plotCalorieChart(totalCaloricData, dates)
+        plotProteinChart(protein, dates)
     } catch (error) {
         console.error('Error:', error);
     }
 };
 
 
-const fetchTdee = async () => {
-    try {
-        const { tdee, pRatio, weekly_target, caloricData, weightInfo } = await get_user_information();
-        updateTDEE(tdee, pRatio, caloricData, weightInfo);
-    }
-    catch (error) {
-        console.error("error:", error);
-    }
-}
+
+
 fetchData();
-fetchTdee();
+//fetchTdee();

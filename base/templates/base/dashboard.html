@@ -46,8 +46,8 @@
     </header>
     <nav class="navbar navbar-expand-lg justify-content-center navbar-dark bg-dark">
         <ul class="nav navbar-nav">
-            <li class="active">
-                <a class="nav-link" href="dashboard"> Dashboard</a>
+            <li class="nav-item">
+                <a class="nav-link active" href="dashboard"> Dashboard</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="foodlog">Food Log</a>
@@ -65,39 +65,46 @@
         <h2>Welcome, {{ Username }}!</h2>
         <div class="calorie-summary">
             <div class="row">
-                <div class="col-md-6 mb-4">
+                <div class="col-md-6 mb-6">
                     <div id="weightTrend">
                         <h3>Weight Trend</h3>
                         <canvas id="weightChart"></canvas>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <div id="td">
-                        <h3>TDEE:</h3>
+                <div class="col-md-6 mb-6">
+                    <div id="calorieTrend">
+                        <h3>Calories Consumed</h3>
+                        <canvas id="calorieChart"></canvas>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-5 mb-4">
+                    <h3> Protein Consumed</h3>
+                    <canvas id="proteinChart"></canvas>
+                </div>"
+            </div>
         </div>
-        <div class="container mt-4"
-        <h1>Instructions:</h1>
-        <p class="mb-4">Before beginning logging food please fill out your current estimated daily energy expenditure
-            (TDEE) and weekly weight change targets in kg. 
+        <div class="container mt-4" <h1>Instructions:</h1>
+            <p class="mb-4">Before beginning logging food please fill out your current estimated daily energy
+                expenditure
+                (TDEE) and weekly weight change targets in kg.
 
-            If you do not have an estimated energy expenditure, there are several calculators available online. 
-            To log a food, you must first supply a name for the food as well as caloric information per 100g. 
+                If you do not have an estimated energy expenditure, there are several calculators available online.
+                To log a food, you must first supply a name for the food as well as caloric information per 100g.
 
 
-            You may then repeatedly log it from the option menu by providing the amount of food consumed in grams. 
-            The website will keep a running average of your weight changes smoothed out to avoid daily fluctuations.
-            If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure,
-            otherwise it will fall back to the energy expenditure provided.
-        </p>
-    </div>
+                You may then repeatedly log it from the option menu by providing the amount of food consumed in grams.
+                The website will keep a running average of your weight changes smoothed out to avoid daily fluctuations.
+                If there is sufficient data in the last 3 weeks, it will provide an updated daily energy expenditure,
+                otherwise it will fall back to the energy expenditure provided.
+            </p>
+        </div>
     </main>
 
     <footer class="footer">
         <div class="container">
-            <p>&copy; Caloricology 
+            <p>&copy; Caloricology
                 support@caloricology.com</p>
         </div>
     </footer>
