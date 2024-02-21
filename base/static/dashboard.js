@@ -26,7 +26,7 @@ function getWeights() {
                                 weight.push(entry.weight);
                                 weightDates.push(entry.Date);
                             }
-                            if (entry.totalCaloricData > 0) {
+                            if (entry.calories > 0) {
                                 dates.push(entry.Date)
                                 total_caloric_data.push(entry.calories)
                                 protein.push(entry.protein)
