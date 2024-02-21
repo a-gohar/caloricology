@@ -7,11 +7,12 @@ function closePopupForm() {
 }
 
 function loadForm(option, event) {
+
     event.preventDefault()
     // Container for the dynamic form
     var dynamicFormContainer = document.getElementById('dynamic-form-container');
 
-    // Clear any previous form
+
     dynamicFormContainer.innerHTML = '';
 
     // Fetch the form content from the server using AJAX
@@ -48,12 +49,8 @@ function unhideButtons(showCommonAndCreated){
 }
 
 
-const foodLogData = [
-    { name: 'Food 1', calories: 300, protein: 0, fat: 0, carbs: 0 },
-    { name: 'Food 2', calories: 500, protein: 0, fat: 0, carbs: 0 },
-];
 
-// Initial date
+
 let currentDate = new Date();
 
 // Function to navigate between days
@@ -70,7 +67,6 @@ async function updateFoodLog(energy) {
     xhr.open('GET', 'update-food-log?date=' + currentDate.toISOString(), true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            // Parse the JSON response
             consumedCalories = 0;
             remainingCalories = 0;
             dailyProtein = 0;
@@ -111,14 +107,12 @@ async function updateFoodLog(energy) {
 }
 
 async function removeFood(foodName, foodDate, foodCalories) {
-    // Send a POST request to your Django view to remove the specified food
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'remove-food', true);
     xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            // Refresh the food log after successful removal
             updateFoodLog(energyExpenditure);
         }
     };
@@ -134,7 +128,7 @@ function updateCalorieSummary() {
     consumedCaloriesElement.innerText += `${dailyCarb}g Carb`
     remainingCaloriesElement.innerText = `Remaining Calories: ${remainingCalories.toFixed(0)} `;
 }
-// Function to update the displayed current date
+
 function updateCurrentDate() {
     const currentDayElement = document.getElementById('current-day');
     currentDayElement.textContent = currentDate.toDateString();
@@ -150,17 +144,14 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minEntries = 3;
     const minDaysWithCaloricInfo = 19; // 
     const recentWeights = tdeeWeight.filter(weight => weight !== 0)
-    // Check if there are enough weight entries in the last 3 weeks
     if (recentWeights.length < minEntries) {
         return tee;
     }
-    // Check if there are enough days with non-zero caloric information
     const recentCaloricData = tdeeCaloricData.filter(calories => calories !== 0);
     if (recentCaloricData.length < minDaysWithCaloricInfo) {
         return tee;
     }
     const w4 = runningWeight(recentWeights, recentWeights.length)
-    // Calculate weight change and calories consumed
     const weightChange = w4[w4.length - 1] - w4[0];
     if (weightChange > 0){
         const caloriesPerPound = pRatioCalculator(0.5);

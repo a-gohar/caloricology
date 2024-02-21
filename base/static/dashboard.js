@@ -5,7 +5,6 @@ function getWeights() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // Parse the JSON response
                     try {
                         var response = JSON.parse(xhr.responseText);
                         const weight = [];
@@ -36,7 +35,6 @@ function get_user_information() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // Parse the JSON response
                     try {
                         var response = JSON.parse(xhr.responseText);
                         var tdee = response.goals.tdee;
@@ -84,7 +82,7 @@ new Chart(
             plugins: {
               datalabels: {
                  display: function(context) {
-                    return context.dataset.data[context.dataIndex] !== 0; // or >= 1 or ...
+                    return context.dataset.data[context.dataIndex] !== 0; 
                  }
               }
             }
@@ -99,13 +97,11 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
     const minDaysWithCaloricInfo = 19; // 
     const divId = 'td';
     const recentWeights = tdeeWeight.filter(weight => weight !== 0)
-    // Check if there are enough weight entries in the last 3 weeks
     if (recentWeights.length < minEntries) {
         console.log("Not enough weight entries in the last 3 weeks.");
         document.getElementById(divId).innerText += ` ${tee.toFixed(2)}`;
         return;
     }
-    // Check if there are enough days with non-zero caloric information
     const recentCaloricData = tdeeCaloricData.filter(calories => calories !== 0);
     if (recentCaloricData.length < minDaysWithCaloricInfo) {
         console.log("Not enough days with non-zero caloric information.");
@@ -113,7 +109,6 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
         return;
     }
     const w4 = runningWeight(recentWeights, recentWeights.length)
-    // Calculate weight change and calories consumed
     const weightChange = w4[w4.length - 1] - w4[0];
     if (weightChange > 0){
         const caloriesPerPound = pRatioCalculator(0.5);
@@ -129,7 +124,7 @@ function updateTDEE(tee, p, tdeeCaloricData, tdeeWeight) {
 
 function runningWeight(mArray, mRange) {
     var k = 2 / (mRange + 1);
-    emaArray = [mArray[0]];
+    const emaArray = [mArray[0]];
     for (var i = 1; i < mArray.length; i++) {
         emaArray.push(mArray[i] * k + emaArray[i - 1] * (1 - k));
     }
@@ -142,7 +137,6 @@ const fetchData = async () => {
         const w2 = runningWeight(weight, weight.length);
         plotWeightTrend(weight, w2, dates);
     } catch (error) {
-        // Handle errors
         console.error('Error:', error);
     }
 };
