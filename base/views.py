@@ -93,7 +93,6 @@ def get_weights(request) -> JsonResponse:
     for entry in day:
             serialized_data.append({"Date": str(entry.date), "protein": entry.pro,
                                     "calories": entry.calories,"weight": entry.weight})
-    print(serialized_data)
     return JsonResponse({"weights":serialized_data})
     
 
