@@ -128,7 +128,7 @@ function updateCalorieSummary(consumedCalories, remainingCalories, dailyProtein,
     proteinConsumedElement.innerText = `${dailyProtein}g protein`;
     fatConsumedElement.innerText = `${dailyFat}g fat`;
     carbConsumedElement.innerText = `${dailyCarb}g Carb`;
-    remainingCaloriesElement.innerText = `${remainingCalories} calories `;
+    remainingCaloriesElement.innerText = `${remainingCalories.toFixed(0)} calories `;
 }
 
 function updateCurrentDate() {
