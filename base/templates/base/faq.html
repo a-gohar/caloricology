@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    {% block extra_head %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website" />
+    <meta property="og:description"
+        content="Countcals.com is a diet coach and nutrition application helping you to reach your fitness goals" />
+    <meta name="description"
+        content="Countcals.com is a diet coach and nutrition application helping you to reach your fitness goals" />
+    <title>FAQ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% include 'analytics.html' %}
+</head>
+
+<body>
+    <div class="container">
+        <header
+            class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+            <div class="col-md-3 mb-2 mb-md-0">
+                CountCals
+            </div>
+
+            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/" class="nav-link px-2">Home</a></li>
+                <li><a href="faq" class="nav-link px-2 link-secondary">FAQ</a></li>
+            </ul>
+
+            <div class="col-md-3 text-end">
+                <a href="accounts/login"><button type="button" class="btn btn-outline-primary me-2">Login</button><a />
+                    <a href="accounts/signup"><button type="button" class="btn btn-primary">Sign-up</button> </a>
+            </div>
+        </header>
+    </div>
+    <main>
+        <div class="container">
+            <h1 class="mt-5 mb-4 text-center">Frequently Asked Questions</h1>
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true"
+                            aria-controls="collapseOne">
+                            Why doesn't CountCals provide individual macro targets?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            We primarily believe that the overall calorie target is what matters most and users can choose to distribute the calories between the macros however they like. We would recommend choosing a protein target based on your training goals and then distributing the remaining calories between carbohydrates and fat.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button"
+                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            What units does CountCals use?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                           Bodyweight is reported in kilograms while food units are in grams. We are working to make the application work with imperial units in the future.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false"
+                            aria-controls="collapseThree">
+                           What is the difference between a created food and a common food?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            A common food is a food that was logged using our 3rd-party database (Food Data Central). A created food is a food that a user has added to the program and is unique to themselves.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFour" aria-expanded="false"
+                            aria-controls="collapseFour">
+                           What does average weight mean in the charts?
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            We keep a moving average of the weights you enter so that day-to-day fluctuations in your weight do not affect the program as much and to reduce the random error in your scale.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed"
+                            type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseFive" aria-expanded="false"
+                            aria-controls="collapseFive">
+                           Does CountCals change it's recommendations based on how well I follow the program? Are there any plans to add a target weight rather than a target weekly change?
+                           How often does the program update?
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            No, the recommendations are memoryless, if you missed your targets last week, we do not adjust this week. Maybe, but for right now we think weekly weight change targets are the way to go. If the program has more than 3 weight logs and 19 logged days in the last 3 weeks then it will calculate your energy expenditure, otherwise it will fall back to the value provided in Profile
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

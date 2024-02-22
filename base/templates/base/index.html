@@ -5,82 +5,48 @@
     <meta charset="UTF-8">
     {% block extra_head %}{% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:type" content="website" />
     <meta property="og:description" content="Countcals.com is a diet coach and nutrition application helping you to reach your fitness goals" />
     <meta name="description"  content="Countcals.com is a diet coach and nutrition application helping you to reach your fitness goals" />
     <title>Calorie Tracker</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        h1 {
-            color: #3498db;
-            margin-bottom: 20px;
-        }
-
-        p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
-            background-color: #3498db;
-            padding: 10px 20px;
-            border-radius: 2px;
-            transition: background-color 0.3s;
-        }
-
-        a:hover {
-            background-color: #2980b9;
-        }
-
-        @media only screen and (max-width: 600px) {
-            body {
-                font-size: 14px;
-            }
-
-            header,
-            nav {
-                padding: 8px;
-            }
-
-            nav a {
-                margin: 0 5px;
-                font-size: 14px;
-            }
-
-            main {
-                padding: 10px;
-            }
-        }
-    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     {% include 'analytics.html' %}
 </head>
 
 <body>
-    <h1>Welcome to the Calorie Tracker and Nutrition Coach!</h1>
-    <p>
-        The Tracker helps you track the calories you are eating as well as provide you with nutrition targets to meet all of your fitness goals
-    </p>
-    <p>
-        To get started, please
-        <a href="/accounts/login">login</a>
-        or
-        <a href="/accounts/signup">register</a>.
-    </p>
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+          <div class="col-md-3 mb-2 mb-md-0">
+            CountCals
+          </div>
+
+          <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="" class="nav-link px-2 link-secondary">Home</a></li>
+          <li><a href="faq" class="nav-link px-2">FAQ</a></li>
+        </ul>
+    
+          <div class="col-md-3 text-end">
+            <a href="accounts/login"><button type="button" class="btn btn-outline-primary me-2">Login</button><a/>
+            <a href="accounts/signup"><button type="button" class="btn btn-primary">Sign-up</button> </a>
+          </div>
+        </header>
+      </div>
+    <main>
+        <div class="px-4 py-5 my-5 text-center">
+
+            <h1 class="display-5 fw-bold text-body-emphasis mb-3">Control your nutrition and weight change goals</h1>
+            <h2 class="display-6 fw-bold text-body-emphasis mb-5">Gain muscle, lose weight or just maintain</h2>
+            <div class="col-lg-6 mx-auto">
+              <p class="lead mb-4">CountCals is a calorie tracker that will automatically adapt to your energy expenditure and use that information to personalize your nutrition plan.
+
+              </p>
+            </div>
+          </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -1,3 +1,4 @@
+"use strict"
 function openPopupForm() {
     document.getElementById('popup-form').style.display = 'block';
 }
@@ -9,13 +10,11 @@ function closePopupForm() {
 function loadForm(option, event) {
 
     event.preventDefault()
-    // Container for the dynamic form
     var dynamicFormContainer = document.getElementById('dynamic-form-container');
 
 
     dynamicFormContainer.innerHTML = '';
 
-    // Fetch the form content from the server using AJAX
     var xhr = new XMLHttpRequest();
     xhr.open('GET', option, true);
     xhr.onreadystatechange = function () {
@@ -68,13 +67,12 @@ async function updateFoodLog(energy) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             consumedCalories = 0;
-            remainingCalories = 0;
+            remainingCalories = energy
             dailyProtein = 0;
             dailyFat = 0;
             dailyCarb = 0;
             var response = JSON.parse(xhr.responseText);
 
-            // Update the food log based on the fetched content
             const foodLogContainer = document.getElementById('food-log');
             foodLogContainer.innerHTML = '';
 
@@ -85,8 +83,8 @@ async function updateFoodLog(energy) {
                 foodEntryElement.appendChild(entryText);
 
                 const removeButton = document.createElement('button');
-                removeButton.className = 'remove-food';
-                removeButton.innerText = 'X';
+                removeButton.className = 'btn btn-outline-primary  ms-5';
+                removeButton.innerText = 'Remove Food';
                 removeButton.addEventListener('click', () => removeFood(entry.name, currentDate, entry.calories));
 
                 foodEntryElement.appendChild(removeButton);
@@ -97,10 +95,11 @@ async function updateFoodLog(energy) {
                 dailyProtein += entry.protein;
                 dailyFat += entry.fat;
                 dailyCarb += entry.carbs
+                remainingCalories -= entry.calories
             });
+
         }
-        remainingCalories = energy - consumedCalories;
-        updateCalorieSummary()
+        updateCalorieSummary(consumedCalories, remainingCalories, dailyProtein, dailyFat, dailyCarb)
     };
     xhr.send();
     return false;
@@ -119,14 +118,17 @@ async function removeFood(foodName, foodDate, foodCalories) {
     console.log(foodDate)
     xhr.send(JSON.stringify({ food_name: foodName, food_date: foodDate, calories: foodCalories }));
 }
-function updateCalorieSummary() {
-    const consumedCaloriesElement = document.getElementById('consumed-calories');
-    const remainingCaloriesElement = document.getElementById('remaining-calories');
-    consumedCaloriesElement.innerText = ` Consumed : ${consumedCalories}  calories\r\n`;
-    consumedCaloriesElement.innerText += `${dailyProtein}g Protein \r\n`;
-    consumedCaloriesElement.innerText += `${dailyFat}g Fat\r\n`
-    consumedCaloriesElement.innerText += `${dailyCarb}g Carb`
-    remainingCaloriesElement.innerText = `Remaining Calories: ${remainingCalories.toFixed(0)} `;
+function updateCalorieSummary(consumedCalories, remainingCalories, dailyProtein, dailyFat, dailyCarb) {
+    const consumedCaloriesElement = document.getElementById('caloriesConsumed');
+    const remainingCaloriesElement = document.getElementById('caloriesRemaining');
+    const proteinConsumedElement = document.getElementById('proteinConsumed');
+    const fatConsumedElement = document.getElementById('fatConsumed');
+    const carbConsumedElement = document.getElementById('carbConsumed');
+    consumedCaloriesElement.innerText = `${consumedCalories}  calories`;
+    proteinConsumedElement.innerText = `${dailyProtein}g protein`;
+    fatConsumedElement.innerText = `${dailyFat}g fat`;
+    carbConsumedElement.innerText = `${dailyCarb}g Carb`;
+    remainingCaloriesElement.innerText = `${remainingCalories} calories `;
 }
 
 function updateCurrentDate() {
@@ -179,7 +181,6 @@ function get_user_information() {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
-                    // Parse the JSON response
                     try {
                         var response = JSON.parse(xhr.responseText);
                         var tdee = response.goals.tdee;

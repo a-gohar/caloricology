@@ -26,6 +26,10 @@ def index(request):
     """
     return render(request, "base/index.html")
 
+def faq(request):
+    """This view returns the faq page
+    """
+    return render(request, "base/faq.html")
 @login_required
 def foodlog(request):
     """Function to return the foodlog.

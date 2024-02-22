@@ -5,29 +5,7 @@
            background-color: #f4f4f4;
        }
 
-       header {
-           background-color: #333;
-           color: #fff;
-           padding: 10px;
-           text-align: center;
-       }
-
-
-       nav {
-           background-color: #444;
-           color: #fff;
-            padding: 20px;
-           text-align: center;
-       }
-
-       nav a {
-           color: #fff;
-           text-decoration: none;
-           margin: 25px 25px 25px 25px;
-           font-weight: bold;
-           font-size: 18px;
-       }
-
+       
        #fab-container {
            position: fixed;
            bottom: 20px;
@@ -71,19 +49,7 @@
            color: #333;
        }
 
-       .calorie-summary {
-           display: flex;
-           justify-content: space-between;
-           margin-bottom: 20px;
-       }
-
-       .calorie-summary div {
-           flex: 1;
-           padding: 6px;
-           background-color: #fff;
-           border-radius: 5px;
-           box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-       }
+       
 
        #food-log {
            background-color: #fff;
@@ -123,17 +89,7 @@
            font-size: 18px;
        }
 
-       footer {
-           background-color: #333;
-           color: #fff;
-           padding: 10px;
-           text-align: center;
-           position: fixed;
-           bottom: 0;
-           width: 100%;
-           font-size: 14px
-       }
-
+       
        #popup-form #close-btn {
            position: absolute;
            top: 10px;
@@ -142,27 +98,7 @@
            cursor: pointer;
        }
 
-       button {
-           background-color: #3498db;
-           /* Blue */
-           color: #fff;
-           /* White text */
-           border: 2px solid #3498db;
-           /* Blue border */
-           padding: 10px 20px;
-           font-family: 'Arial', sans-serif;
-           font-size: 16px;
-           font-weight: bold;
-           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-           /* Box shadow */
-           transition: background-color 0.3s ease;
-           /* Smooth transition */
-       }
-
-       button:hover {
-           background-color: #2980b9;
-           /* Darker blue on hover */
-       }
+       
 
 
 
